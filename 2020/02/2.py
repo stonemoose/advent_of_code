@@ -15,5 +15,3 @@ def valid_password_part_two(line):
 
 print(sum([valid_password(line) for line in open('input').readlines()]))
 print(sum([valid_password_part_two(line) for line in open('input').readlines()]))
-
-
