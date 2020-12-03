@@ -2,13 +2,12 @@ import numpy as np
 
 
 def traverse(right, down, matrix):
-    col, row = 0, 0
+    col = 0
     sum = 0
-    while row < len(matrix):
-        sum += input[row][col]
+    for line in matrix[::down]:
+        sum += line[col]
         col += right
-        col %= len(matrix[0])
-        row += down
+        col %= len(line)
     return sum
 
 
