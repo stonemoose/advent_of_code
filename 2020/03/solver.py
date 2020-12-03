@@ -2,8 +2,7 @@ import numpy as np
 
 
 def traverse(right, down, matrix):
-    col = 0
-    row = 0
+    col, row = 0, 0
     sum = 0
     while row < len(matrix):
         sum += input[row][col]
@@ -13,7 +12,7 @@ def traverse(right, down, matrix):
     return sum
 
 
-input = [[1 if char == '#' else 0 for char in line.strip()] for line in open('input').readlines()]
+input = [[char == '#' for char in line] for line in open('input').read().splitlines()]
 slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
 
 print("Part 1:", traverse(3, 1, input))
