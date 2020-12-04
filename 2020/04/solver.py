@@ -17,7 +17,7 @@ part2 = 0
 
 with open("input") as f:
     for passport in f.read().split("\n\n"):
-        p_fields = dict(re.findall(r'(\w{3}):(\S+)\s?', passport))
+        p_fields = dict(re.findall(r'(\w{3}):(\S+)(?:\s|$)', passport))
         if set(rules).issubset(set(p_fields)):
             part1 += 1
             part2 += all(rules[field](p_fields[field]) for field in rules)
