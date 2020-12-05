@@ -11,15 +11,12 @@ passes.sort()
 
 # Part 1
 print(max(passes))
-
 # Part 2
+print(set(range(passes[0], passes[-1])).difference(passes).pop())
+
+# Part 2 manual uncomment lines under
 # Look for where the last digit changes
 for i, p in enumerate(passes):
     print(f'{p:3}', end=' ')
     if i % 10 == 9:
         print()
-
-# Or just get the answer...
-for curr_pass, next_pass in zip(passes[:-1], passes[1:]):
-    if curr_pass+1 != next_pass:
-        print(curr_pass+1)
