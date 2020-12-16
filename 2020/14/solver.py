@@ -1,26 +1,4 @@
 from itertools import product, chain
-with open('input') as f:
-    in_file = f.read().strip().split('\n')
-
-memory = {}
-for line in in_file:
-    first, second = line.split(' = ')
-    if first == 'mask':
-        mask = second
-    else:
-        string = ''
-        for digit, m_digit in zip(f'{int(second):036b}', mask):
-            if m_digit == 'X':
-                string += digit
-            else:
-                string += m_digit
-        memory[first] = int(string, 2)
-
-
-ans = 0
-for key in memory:
-    ans += memory[key]
-print('Part1: ', ans)
 
 
 def possible_locations(mask, mem):
@@ -36,17 +14,27 @@ def possible_locations(mask, mem):
     return all_masks
 
 
-memory = {}
-for line in in_file:
-    first, second = line.split(' = ')
+with open('input') as f:
+    docking_data = [line.split(' = ') for line in f.read().strip().split('\n')]
+memory1 = {}
+memory2 = {}
+
+for first, second in docking_data:
     if first == 'mask':
         mask = second
     else:
+        string = ''
+        for digit, m_digit in zip(f'{int(second):036b}', mask):
+            if m_digit == 'X':
+                string += digit
+            else:
+                string += m_digit
+        memory1[first] = int(string, 2)
+
         mem = int(first[4:-1])
         for loc in possible_locations(mask, mem):
-            memory[loc] = int(second)
+            memory2[loc] = int(second)
 
-ans = 0
-for key in memory:
-    ans += memory[key]
-print('Part2: ', ans)
+
+print(f'Part 1: {sum(memory1.values())}')
+print(f'Part 2: {sum(memory2.values())}')
