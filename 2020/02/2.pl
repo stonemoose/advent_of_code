@@ -11,7 +11,7 @@ pass_list(N) --> integer(Min),
                  string([Char]),
                  ": ",
                  string(Pass),
-                 "\n", !,
+                 "\n",
                  pass_list(N1),
                  {
                      occurrences_of_term(Char, Pass, Num),
@@ -27,11 +27,11 @@ pass_list_2(N) --> integer(First),
                    string([Char]),
                    ": ",
                    string(Pass),
-                   "\n", !,
+                   "\n",
                    pass_list_2(N1),
                    {
                        (nth1(First, Pass, Char) xor nth1(Second, Pass, Char)) ->
                            N is N1 + 1; N is N1
                    }.
 
-xor(L, R) :- L -> \+ R; R.
+xor(L, R) :- (L ; R), \+ (L, R).

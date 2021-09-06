@@ -5,14 +5,14 @@ integers([]) --> call(eos), !.
 integers([X|Xs]) --> integer(X), "\n", integers(Xs).
 
 %% part 1
-solve(List, P) :-
+solve1(List, P) :-
     select(X, List, L1),
     select(Y, L1, _),
     2020 is X + Y,
     P is X * Y.
 
 %% part 2
-solve(List, P) :-
+solve2(List, P) :-
     select(X, List, L1),
     select(Y, L1, L2),
     select(Z, L2, _),

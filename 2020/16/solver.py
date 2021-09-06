@@ -18,7 +18,7 @@ for line in rules.split('\n'):
 invalid = []
 valid = []
 for ticket in nearby_tickets.split('\n')[1:]:
-    valid_ticket = True
+
     possible_list = []
     for num in ticket.split(','):
         possible = set(rule for rule in rules_dict if rules_dict[rule](int(num)))
