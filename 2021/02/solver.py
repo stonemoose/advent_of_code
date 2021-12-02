@@ -1,18 +1,18 @@
 
-lines = [line.strip() for line in open('input').readlines()]
+lines = [line.strip().split(' ') for line in open('input').readlines()]
 
 down = 0
 forward = 0
 aim = 0
-for line in lines:
-    command, number = line.split(' ')
+for command, number in lines:
+    number = int(number)
     if command == 'forward':
-        forward += int(number)
-        down += aim * int(number)
+        forward += number
+        down += aim * number
     elif command == 'down':
-        aim += int(number)
+        aim += number
     elif command == 'up':
-        aim -= int(number)
+        aim -= number
 
-print('Part 1: ', aim*forward)
-print('Part 2: ', down*forward)
+print(f'Part 1: {aim*forward}')
+print(f'Part 2: {down*forward}')
