@@ -1,22 +1,13 @@
 
 class Board():
 
-    def __init__(self, board_string):
-        self.rows = []
-        for row in board_string.split('\n'):
-            self.rows.append(list(map(int, row.split())))
-
-        self.columns = []
-        for i in range(5):
-            self.columns.append({row[i] for row in self.rows})
-
+    def __init__(self, board):
+        self.rows = [list(map(int, row.split())) for row in board.split('\n')]
+        self.columns = list(map(set, zip(*self.rows)))
         self.rows = list(map(set, self.rows))
         self.winning_lines = self.rows + self.columns
 
-        self.numbers = set()
-        for row in self.rows:
-            for n in row:
-                self.numbers.add(n)
+        self.numbers = set.union(*self.rows)
         self.marked_numbers = set()
 
     def mark(self, number):
