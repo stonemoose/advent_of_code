@@ -2,14 +2,15 @@ from collections import Counter
 
 
 def optimal_fuel_usage(fuel_function, positions):
-    last_count = 1000000000
-    for i in range(1000):
+    last_count = float('inf')
+    for i in range(max(positions)):
         count = 0
         for position, num in positions.items():
             count += fuel_function(abs(position - i)) * num
         if count > last_count:
-            return last_count
-        last_count, count = count, last_count
+            break
+        last_count = count
+    return last_count
 
 
 if __name__ == '__main__':
