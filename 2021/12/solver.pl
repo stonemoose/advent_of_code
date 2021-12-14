@@ -9,7 +9,6 @@ solve(Part1, Part2):-
     findall(true, walk_part2("start", "end"), P2),
     length(P2, Part2).
 
-
 walk_part1(A, B):-
     path(A, B, [A, B]).
 
@@ -47,7 +46,6 @@ small([Cave|_]):-
 connected(A, B):-
     edge(A, B);
     edge(B, A).
-
 
 
 edge("he", "JK").
