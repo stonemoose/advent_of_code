@@ -10,3 +10,16 @@ depth(Last, N) --> integer(Next),
                        Next > Last ->
                            N is N1 + 1; N is N1
                    }.
+
+depth3(_, 0) --> call(eos), !.
+depth3([Head|Tail], N) --> integer(Next),
+                           "\n",
+                           depth3(NextList, N1),
+                           {
+                               append([Head], Tail, PrevList),
+                               append(Tail, [Next], NextList),
+                               sum_list(PrevList, First),
+                               sum_list(NextList, Second),
+                               Second > First ->
+                                   N is N1 + 1; N is N1
+                           }.
