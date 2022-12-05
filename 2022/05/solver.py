@@ -6,7 +6,7 @@ with open("2022/05/input") as f:
     stack_info, proc_info = [p.split("\n") for p in f.read().strip().split("\n\n")]
 
 stacks = [[] for _ in range(10)]
-for line in stack_info:
+for line in stack_info[:-1]:
     for crate in re.finditer(r"[A-Z]", line):
         stacks[int(stack_info[-1][crate.start()])].append(crate.group())
 
