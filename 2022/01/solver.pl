@@ -29,29 +29,3 @@ part_2(Ans):-
     delete(ElvesNoMax, N2, ElvesNoMax2),
     max_list(ElvesNoMax2, N3),
     Ans is N1 + N2 + N3.
-
-
-
-%%% potensielt bedre
-max3_list(List, Max1, Max2, Max3):-
-    max3_list(List, )
-
-
-
-max3_list([], _, _, _).
-
-max3_list([H|T], N1, N2, _) :-
-    H >= N1,
-    max3_list(T, H, N1, N2).
-
-max3_list([H|T], N1, N2, _) :-
-    H < N1, H >= N2,
-    max3_list(T, N1, H, N2).
-
-max3_list([H|T], N1, N2, N3) :-
-    H < N2, H >= N3,
-    max3_list(T, N1, N2, H).
-
-max3_list([H|T], N1, N2, N3) :-
-    H < N3,
-    max3_list(T, N1, N2, N3).
