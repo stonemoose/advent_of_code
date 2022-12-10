@@ -1,0 +1,12 @@
+__pycache__
+.#*
+
+# input-files
+input
+i
+test*
+
+# aocd-files
+token2id.json
+github.*
+titles/
