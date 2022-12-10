@@ -11,10 +11,8 @@ for line in input * 2:
 
 for row in range(6):
     for pos in range(40):
-        if cycles[row * 40 + pos] in {pos - 1, pos, pos + 1}:
-            print("█", end="")
-        else:
-            print(" ", end="")
+        pixel = "█" if pos - 1 <= cycles[row * 40 + pos] <= pos + 1 else " "
+        print(pixel, end="")
     print()
 
 puzzle.answer_a = sum(cycles[i - 1] * i for i in [20, 60, 100, 140, 180, 220])

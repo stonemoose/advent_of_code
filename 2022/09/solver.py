@@ -2,16 +2,11 @@ from aocd.models import Puzzle
 
 
 def get_new_position(head, tail):
-    while abs(tail[0] - head[0]) > 1 or abs(tail[1] - head[1]) > 1:
-        if tail[0] < head[0]:
-            tail[0] += 1
-        elif tail[0] > head[0]:
-            tail[0] -= 1
-
-        if tail[1] < head[1]:
-            tail[1] += 1
-        elif tail[1] > head[1]:
-            tail[1] -= 1
+    if abs(tail[0] - head[0]) > 1 or abs(tail[1] - head[1]) > 1:
+        if tail[0] != head[0]:
+            tail[0] += 1 if tail[0] < head[0] else -1
+        if tail[1] != head[1]:
+            tail[1] += 1 if tail[1] < head[1] else -1
     return tail
 
 
