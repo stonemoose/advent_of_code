@@ -1,60 +1,67 @@
 import re
 import numpy as np
-from aoc_functionality.loading_bar import print_progress_bar
+from aoc_functionality.util import print_progress_bar, profile
 
 from aocd.models import Puzzle
 
-puzzle = Puzzle(2022, 15)
-input = puzzle.input_data.strip().split("\n")
-# input = puzzle.example_data.strip().split("\n")
+
+def main():
+    def get_edges2(x, y, dist):
+        window = 4_000_000
+        window = 20
+        edges = set()
+        for x2 in range(max(0, x - dist), min(window, x + dist + 1)):
+            for edge in ((x2, y - (x - x2)), (x2, y - (x - x2))):
+                if 0 <= edge[0] <= window and 0 <= edge[1] <= window:
+                    edges.add(edge)
+        return edges
+
+    def get_edges(x, y, dist):
+        window = 4_000_000
+        window = 20
+        edges = set()
+        for i in range(dist):
+            other_dist = abs(dist + 1 - i)
+            for edge in (
+                (x + i, y + other_dist),
+                (x - i, y - other_dist),
+                (x + other_dist, y - i),
+                (x - other_dist, y + i),
+            ):
+                if 0 <= edge[0] <= window and 0 <= edge[1] <= window:
+                    edges.add(edge)
+        return edges
+
+    puzzle = Puzzle(2022, 15)
+    input = puzzle.input_data.strip().split("\n")
+    input = puzzle.example_data.strip().split("\n")
+
+    sensor_distance = []
+    possible = set()
+    all_edges = set()
+    for i, line in enumerate(input):
+        # print_progress_bar(i, len(input) - 1)
+        x, y, bx, by = map(int, re.findall("-?\d+", line))
+        dist = abs(x - bx) + abs(y - by)
+        sensor_distance.append([(x, y), dist])
+
+        edges = get_edges2(x, y, dist)
+        possible.update(edges & all_edges)
+        all_edges.update(edges)
+
+    n = 0
+    print(f"possible: {len(possible)}")
+    print(f"all edges in window: {len(all_edges)}")
+    for x, y in possible:
+        # print_progress_bar(n, len(possible) - 1)
+        n += 1
+        for sensor, dist in sensor_distance:
+            if abs(x - sensor[0]) + abs(y - sensor[1]) <= dist:
+                break
+        else:
+            print()
+            print(x, y, x * 4000000 + y)
+            return
 
 
-def update_impossible(x, y, dist, impossible):
-    row = 2000000
-    # if dist - abs(y - row) < 0:
-    #     return
-
-    for x2 in range(x - dist + abs(y - row), x + dist - abs(y - row) + 1):
-        impossible[x2] = 1
-
-
-max_x = 4823751
-max_y = 3997568
-min_x = -1010425
-min_y = -85030
-
-start_distance = []
-
-beacons = set()
-for line in input:
-    x, y, bx, by = map(int, re.findall("-?\d+", line))
-    dist = abs(x - bx) + abs(y - by)
-    beacons.add((bx, by))
-    start_distance.append([(x, y), dist])
-
-impossible_row = [0] * 6000000
-for sensor, dist in start_distance:
-    update_impossible(sensor[0], sensor[1], dist, impossible_row)
-
-puzzle.answer_a = sum(impossible_row) - sum(beacon[1] == 2000000 for beacon in beacons)
-
-possible = []
-checked_distance = []
-i = 0
-for sensor, dist in start_distance:
-    print_progress_bar(i, len(start_distance) - 1)
-    i += 1
-    for i in range(2, dist + 2):
-        other_dist = dist - i
-        maybe_possible = [
-            (sensor[0] + i, sensor[1] + other_dist),
-            (sensor[0] - i, sensor[1] - other_dist),
-            (sensor[0] + other_dist, sensor[1] - i),
-            (sensor[0] - other_dist, sensor[1] + i),
-        ]
-        for x, y in maybe_possible:
-            for sensor, dist in start_distance:
-                if abs(x - sensor[0]) + abs(y - sensor[1]) <= dist:
-                    break
-            else:
-                print(x, y)
+profile(main)
