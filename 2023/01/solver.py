@@ -2,21 +2,22 @@ import re
 
 
 with open("input") as f:
-    data = f.read().strip()
+    text = f.read().strip()
 
-part1 = re.sub("[a-z]", "", data).split("\n")
+part1 = re.sub("[a-z]", "", text).split("\n")
 
 part2 = (
-    data.replace("one", "o1e")
+    text.replace("one", "o1e")
     .replace("two", "t2o")
     .replace("three", "t3e")
-    .replace("four", "4")
-    .replace("five", "5e")
-    .replace("six", "6")
-    .replace("seven", "7n")
+    .replace("four", "f4r")
+    .replace("five", "f5e")
+    .replace("six", "s6x")
+    .replace("seven", "s7n")
     .replace("eight", "e8t")
     .replace("nine", "n9e")
 )
+
 part2 = re.sub("[a-z]", "", part2).split("\n")
 
 
