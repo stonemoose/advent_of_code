@@ -11,3 +11,6 @@ ex*
 token2id.json
 github.*
 titles/
+
+# spacemacs
+*~undo-tree~
