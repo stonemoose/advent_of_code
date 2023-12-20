@@ -14,60 +14,68 @@ def print_map(parsed):
         print("".join(map(str, line)))
 
 
-def get_horizontal_neighbors(x, y, max_val, reach=3):
-    for above_y in range(max(0, y - reach), y):
-        yield (x, above_y)
-    for bellow_y in range(y + 1, min(max_val, y + reach + 1)):
-        yield (x, bellow_y)
-
-
-def get_horizontal_neighbors(x, y, max_val, reach=3):
-    for before_x in range(max(0, x - reach), x):
-        yield (before_x, y)
-    for after_x in range(x + 1, min(max_val, x + reach + 1)):
-        yield (after_x, y)
-
-
-def get_neighbours(x, y):
-    if x:
-        yield (x - 1, y)
-    if y:
-        yield (x, y - 1)
-    yield (x + 1, y)
-    yield (x, y + 1)
-
-
-def dijkstra(square, start):
-    n = len(square)
-    visited = np.full((n, n), False)
+def dijkstra(start, grid, min_moves, max_moves):
+    n = len(grid)
+    vert_visited = np.full((n, n), False)
+    hor_visited = np.full((n, n), False)
     vertical_weights = np.full((n, n), np.inf)
     horizontal_weights = np.full((n, n), np.inf)
     queue = []
-    vertical_weights[start] = horizontal_weights[start] = 0
+    vertical_weights[start] = horizontal_weights[start] = grid[start]
     hq.heappush(queue, (0, "horizontal", start))
     hq.heappush(queue, (0, "vertical", start))
 
     while queue:
-        risk, pos = hq.heappop(queue)
-        visited[pos] = True
-        for pos2 in get_neighbours(*pos):
-            try:
-                if not visited[pos2]:
-                    risk2 = risk + square[pos2]
-                    if risk2 < weights[pos2]:
-                        weights[pos2] = risk2
-                        hq.heappush(queue, (risk2, pos2))
-            except IndexError:
+        heat_loss, direction, pos = hq.heappop(queue)
+        x, y = pos
+
+        if direction == "horizontal":
+            if hor_visited[pos]:
                 continue
-    return weights
+            hor_visited[pos] = True
+            for i in range(min_moves, min(max_moves + 1, y + 1)):
+                new_loss = heat_loss + sum(grid[x, y - j] for j in range(1, i + 1))
+                if vert_visited[x, y - i]:
+                    continue
+                if new_loss < vertical_weights[x, y - i]:
+                    vertical_weights[x, y - i] = new_loss
+                    hq.heappush(queue, (new_loss, "vertical", (x, y - i)))
+
+            for i in range(min_moves, min(max_moves + 1, n - y)):
+                new_loss = heat_loss + sum(grid[x, y + j] for j in range(1, i + 1))
+                if vert_visited[x, y + i]:
+                    continue
+                if new_loss < vertical_weights[x, y + i]:
+                    vertical_weights[x, y + i] = new_loss
+                    hq.heappush(queue, (new_loss, "vertical", (x, y + i)))
+
+        elif direction == "vertical":
+            if vert_visited[pos]:
+                continue
+            vert_visited[pos] = True
+            for i in range(min_moves, min(max_moves + 1, x + 1)):
+                new_loss = heat_loss + sum(grid[x - j, y] for j in range(1, i + 1))
+                if hor_visited[x - i, y]:
+                    continue
+                if new_loss < horizontal_weights[x - i, y]:
+                    horizontal_weights[x - i, y] = new_loss
+                    hq.heappush(queue, (new_loss, "horizontal", (x - i, y)))
+
+            for i in range(min_moves, min(max_moves + 1, n - x)):
+                new_loss = heat_loss + sum(grid[x + j, y] for j in range(1, i + 1))
+                if hor_visited[x + i, y]:
+                    continue
+                if new_loss < horizontal_weights[x + i, y]:
+                    horizontal_weights[x + i, y] = new_loss
+                    hq.heappush(queue, (new_loss, "horizontal", (x + i, y)))
+
+    return np.minimum(vertical_weights, horizontal_weights)
 
 
-def solve(parsed):
+def solve(parsed, min_moves=1, max_moves=3):
     start = (0, 0)
-    end = (len(parsed) - 1, len(parsed[0]) - 1)
-    print_map(parsed)
-    dijkstra_split(start, parsed, end)
-    print(end)
+    distance_map = dijkstra(start, parsed, min_moves, max_moves)
+    return int(distance_map[-1, -1])
 
 
 if __name__ == "__main__":
@@ -77,3 +85,7 @@ if __name__ == "__main__":
     assert solve(parsed_ex) == 102
     parsed = parse(puzzle.input_data)
     puzzle.answer_a = solve(parsed)
+
+    assert solve(parsed_ex, 4, 10) == 94
+    parsed = parse(puzzle.input_data)
+    puzzle.answer_b = solve(parsed, 4, 10)

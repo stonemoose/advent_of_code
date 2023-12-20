@@ -63,8 +63,6 @@ if __name__ == "__main__":
 ?###???????? 3,2,1
     """
     parsed_ex = parse(ex)
-    # for line in parsed_ex:
-    #     print(line)
     assert solve(parsed_ex) == 21
     parsed = parse(puzzle.input_data)
     puzzle.answer_a = solve(parsed)
