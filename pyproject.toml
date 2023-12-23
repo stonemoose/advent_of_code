@@ -3,6 +3,10 @@ name = "advent_of_code"
 version = "0.1.0"
 description = ""
 authors = ["Stein Elgethun <stein.elgethun@gmail.com>"]
+packages = [
+	{ include = "aoc_functionality" },
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
