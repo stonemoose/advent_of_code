@@ -2,7 +2,7 @@ import copy
 import math
 from itertools import permutations
 
-from aoc_functionality.loading_bar import print_progress_bar
+from aoc_functionality.util import print_progress_bar
 
 def flatten(main_list, depth=0):
     for el in main_list:

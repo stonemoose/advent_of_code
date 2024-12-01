@@ -1,6 +1,5 @@
 from copy import deepcopy
 from aocd.models import Puzzle
-import heapq as hq
 import numpy as np
 
 

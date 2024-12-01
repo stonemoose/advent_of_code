@@ -1,7 +1,7 @@
 from copy import deepcopy
 import numpy as np
 import re
-from aoc_functionality.loading_bar import print_progress_bar
+from aoc_functionality.util import print_progress_bar
 
 from aocd.models import Puzzle
 
