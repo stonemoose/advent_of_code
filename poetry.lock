@@ -2,26 +2,35 @@
 
 [[package]]
 name = "advent-of-code-data"
-version = "1.3.2"
+version = "2.0.4"
 description = "Get your puzzle data with a single import"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "advent-of-code-data-1.3.2.tar.gz", hash = "sha256:890077ab858082bad28b4225e0c6059ac1e6fd088cb26ccfe07f5c6c3b0a530b"},
-    {file = "advent_of_code_data-1.3.2-py2.py3-none-any.whl", hash = "sha256:04b9eb18aacdb2b9974a1bc3c977a08a1e6d1d74f019e5e2d4bae274bb853626"},
+    {file = "advent_of_code_data-2.0.4-py3-none-any.whl", hash = "sha256:e3abc993ddc8436fae693b212b4b66b399b42b3c4d8b588c025e5b421c307b3d"},
+    {file = "advent_of_code_data-2.0.4.tar.gz", hash = "sha256:d345dd14e4a123992297d5a22b364d161d4458def9ffb9481797f7aabf138ced"},
 ]
 
 [package.dependencies]
+aocd-example-parser = ">=2023.2"
 beautifulsoup4 = "*"
-colorama = {version = "*", markers = "platform_system == \"Windows\""}
 pebble = "*"
-python-dateutil = "*"
-requests = "*"
-termcolor = "*"
-tzlocal = "*"
+tzdata = {version = "*", markers = "platform_system == \"Windows\""}
+urllib3 = "*"
 
 [package.extras]
 nb = ["IPython", "jupyter-server"]
+
+[[package]]
+name = "aocd-example-parser"
+version = "2023.12.20"
+description = "Implementation of example parser plugins for advent-of-code-data"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "aocd_example_parser-2023.12.20-py3-none-any.whl", hash = "sha256:5244f01a54c4e18e69d53389410444ea8fde50b27a59101d968631ee078dd9c9"},
+    {file = "aocd_example_parser-2023.12.20.tar.gz", hash = "sha256:753d336986dd0ebf00ee91a2e36ba5f51faece3bbcea8827b11d6c57435c7407"},
+]
 
 [[package]]
 name = "beautifulsoup4"
@@ -265,20 +274,6 @@ files = [
 ]
 
 [[package]]
-name = "python-dateutil"
-version = "2.9.0.post0"
-description = "Extensions to the standard Python datetime module"
-optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
-files = [
-    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
-    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
-]
-
-[package.dependencies]
-six = ">=1.5"
-
-[[package]]
 name = "requests"
 version = "2.32.3"
 description = "Python HTTP for Humans."
@@ -300,17 +295,6 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
-name = "six"
-version = "1.16.0"
-description = "Python 2 and 3 compatibility utilities"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-files = [
-    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
-    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
-]
-
-[[package]]
 name = "soupsieve"
 version = "2.6"
 description = "A modern CSS selector implementation for Beautiful Soup."
@@ -320,20 +304,6 @@ files = [
     {file = "soupsieve-2.6-py3-none-any.whl", hash = "sha256:e72c4ff06e4fb6e4b5a9f0f55fe6e81514581fca1515028625d0f299c602ccc9"},
     {file = "soupsieve-2.6.tar.gz", hash = "sha256:e2e68417777af359ec65daac1057404a3c8a5455bb8abc36f1a9866ab1a51abb"},
 ]
-
-[[package]]
-name = "termcolor"
-version = "2.5.0"
-description = "ANSI color formatting for output in terminal"
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "termcolor-2.5.0-py3-none-any.whl", hash = "sha256:37b17b5fc1e604945c2642c872a3764b5d547a48009871aea3edd3afa180afb8"},
-    {file = "termcolor-2.5.0.tar.gz", hash = "sha256:998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f"},
-]
-
-[package.extras]
-tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "typer"
@@ -367,23 +337,6 @@ files = [
 ]
 
 [[package]]
-name = "tzlocal"
-version = "5.2"
-description = "tzinfo object for the local timezone"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "tzlocal-5.2-py3-none-any.whl", hash = "sha256:49816ef2fe65ea8ac19d19aa7a1ae0551c834303d5014c6d5a62e4cbda8047b8"},
-    {file = "tzlocal-5.2.tar.gz", hash = "sha256:8d399205578f1a9342816409cc1e46a93ebd5755e39ea2d85334bea911bf0e6e"},
-]
-
-[package.dependencies]
-tzdata = {version = "*", markers = "platform_system == \"Windows\""}
-
-[package.extras]
-devenv = ["check-manifest", "pytest (>=4.3)", "pytest-cov", "pytest-mock (>=3.3)", "zest.releaser"]
-
-[[package]]
 name = "urllib3"
 version = "2.2.3"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -403,4 +356,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "b3949f4d05fb3e5bc221b39a35d7ce3debec240de5a25af885bf25e09a2b8a38"
+content-hash = "419b2681edf98e9cada070700fdd479fe7479d2b7ac08c5a9c0b88387fd237d4"
