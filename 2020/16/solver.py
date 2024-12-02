@@ -1,7 +1,7 @@
 import re
 
-with open('input') as f:
-    rules, my_ticket, nearby_tickets = f.read().strip().split('\n\n')
+with open("input") as f:
+    rules, my_ticket, nearby_tickets = f.read().strip().split("\n\n")
 
 
 def make_rule(nums):
@@ -10,17 +10,17 @@ def make_rule(nums):
 
 
 rules_dict = {}
-for line in rules.split('\n'):
-    name = line[:line.index(':')]
-    for nums in re.findall(r'(\d*)-(\d*) or (\d*)-(\d*)', line):
+for line in rules.split("\n"):
+    name = line[: line.index(":")]
+    for nums in re.findall(r"(\d*)-(\d*) or (\d*)-(\d*)", line):
         rules_dict[name] = make_rule(nums)
 
 invalid = []
 valid = []
-for ticket in nearby_tickets.split('\n')[1:]:
+for ticket in nearby_tickets.split("\n")[1:]:
 
     possible_list = []
-    for num in ticket.split(','):
+    for num in ticket.split(","):
         possible = set(rule for rule in rules_dict if rules_dict[rule](int(num)))
         if possible:
             possible_list.append(possible)
@@ -30,7 +30,7 @@ for ticket in nearby_tickets.split('\n')[1:]:
     if valid_ticket:
         valid.append(possible_list)
 
-print(f'Part 1: {sum(invalid)}')
+print(f"Part 1: {sum(invalid)}")
 
 possibles = []
 for i in range(len(rules_dict)):
@@ -46,12 +46,12 @@ for poss in sorted(possibles, key=lambda x: x[1]):
     else:
         print(poss)
 
-my_ticket = my_ticket.split('\n')[1]
-my_ticket = [int(num) for num in my_ticket.split(',')]
+my_ticket = my_ticket.split("\n")[1]
+my_ticket = [int(num) for num in my_ticket.split(",")]
 
 ans = 1
 for field in correct_rules:
-    print(f'{field} = {my_ticket[correct_rules[field]]}')
-    if re.match(r'departure*', field):
+    print(f"{field} = {my_ticket[correct_rules[field]]}")
+    if re.match(r"departure*", field):
         ans *= my_ticket[correct_rules[field]]
 print(ans)

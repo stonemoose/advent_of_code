@@ -5,13 +5,13 @@ puzzle = Puzzle(2015, 7)
 
 
 def parse(input_data):
-    return dict(l.split(' -> ')[::-1] for l in input_data.split('\n'))
-        
-    
+    return dict(l.split(" -> ")[::-1] for l in input_data.split("\n"))
+
 
 def solve(input_data, ans_wire):
     wires = parse(input_data)
     wire_cache = {}
+
     def get_value(wire):
         if wire in wire_cache:
             return wire_cache[wire]
@@ -30,7 +30,7 @@ def solve(input_data, ans_wire):
             case a, "RSHIFT", b:
                 val = get_value(a) >> int(b)
             case "NOT", a:
-                val = get_value(a) ^ 0xffff
+                val = get_value(a) ^ 0xFFFF
 
         wire_cache[wire] = val
         return val
@@ -38,8 +38,9 @@ def solve(input_data, ans_wire):
     part1 = get_value(ans_wire)
 
     wire_cache = {}
-    wire_cache['b'] = part1
+    wire_cache["b"] = part1
     part2 = get_value(ans_wire)
     return part1, part2
 
-puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data, 'a')
+
+puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data, "a")

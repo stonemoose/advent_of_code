@@ -1,8 +1,9 @@
-with open('input') as f:
-    lines = [line.strip().split(' | ') for line in f.readlines()]
-    lines = [([set(p) for p in segment_patterns.split()],
-              [set(n) for n in output.split()])
-             for segment_patterns, output in lines]
+with open("input") as f:
+    lines = [line.strip().split(" | ") for line in f.readlines()]
+    lines = [
+        ([set(p) for p in segment_patterns.split()], [set(n) for n in output.split()])
+        for segment_patterns, output in lines
+    ]
 
 
 part1 = 0
@@ -38,8 +39,8 @@ for patterns, output in lines:
             num = 2
         numbers[num] = pattern
 
-    part2 += int(''.join([str(numbers.index(num)) for num in output]))
+    part2 += int("".join([str(numbers.index(num)) for num in output]))
     part1 += len([num for num in output if numbers.index(num) in (1, 4, 7, 8)])
 
-print(f'Part 1: {part1}')
-print(f'Part 2: {part2}')
+print(f"Part 1: {part1}")
+print(f"Part 2: {part2}")

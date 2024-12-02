@@ -4,13 +4,13 @@ import math
 def get_neighbours(x, y, max_x, max_y):
     neighbours = []
     if x > 0:
-        neighbours.append((x-1, y))
+        neighbours.append((x - 1, y))
     if y > 0:
-        neighbours.append((x, y-1))
+        neighbours.append((x, y - 1))
     if x < max_x:
-        neighbours.append((x+1, y))
+        neighbours.append((x + 1, y))
     if y < max_y:
-        neighbours.append((x, y+1))
+        neighbours.append((x, y + 1))
     return neighbours
 
 
@@ -28,9 +28,9 @@ def bfs(grid, start_x, start_y):
     return seen
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    with open('input') as f:
+    with open("input") as f:
         height_map = [[int(n) for n in line.strip()] for line in f.readlines()]
 
     part1 = 0
@@ -47,5 +47,5 @@ if __name__ == '__main__':
                 part1 += height_map[x][y] + 1
                 part2.append(len(bfs(height_map, x, y)))
 
-    print(f'Part 1: {part1}')
-    print(f'Part 2: {math.prod(sorted(part2)[-3:])}')
+    print(f"Part 1: {part1}")
+    print(f"Part 2: {math.prod(sorted(part2)[-3:])}")

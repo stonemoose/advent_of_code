@@ -25,17 +25,15 @@ def is_safe(levels):
 def solve(parsed, problem_dampener=False):
     ans = 0
     for line in parsed:
-        if problem_dampener:
+        if is_safe(line):
+            ans += 1
+        elif problem_dampener:
             for i in range(len(line)):
                 copied_line = list(line)
                 copied_line.pop(i)
                 if is_safe(copied_line):
                     ans += 1
                     break
-            else:
-                ans += is_safe(line)
-        else:
-            ans += is_safe(line)
     return ans
 
 

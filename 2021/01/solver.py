@@ -1,4 +1,4 @@
-with open('input') as f:
+with open("input") as f:
     i = 0
     slide_window = [int(f.readline()) for x in range(3)]
     print(slide_window)

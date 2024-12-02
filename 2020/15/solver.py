@@ -1,5 +1,5 @@
-with open('input') as f:
-    numbers = {int(n): i for i, n in enumerate(f.read().strip().split(','))}
+with open("input") as f:
+    numbers = {int(n): i for i, n in enumerate(f.read().strip().split(","))}
 
 print(numbers)
 prev = 0

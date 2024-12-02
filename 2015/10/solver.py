@@ -21,7 +21,7 @@ def solve(sequence, iterations):
                 current = i
         sequence = next + [str(amount), i]
 
-    sequence = ''.join(sequence)
+    sequence = "".join(sequence)
     return len(sequence)
 
 

@@ -3,10 +3,10 @@ from collections import defaultdict
 
 bags = defaultdict(list)
 
-with open('input') as f:
-    rules = f.read().strip().replace('no other bags', '').splitlines()
+with open("input") as f:
+    rules = f.read().strip().replace("no other bags", "").splitlines()
 
-regex = r'(\d)? ?(\w* \w*) bag'
+regex = r"(\d)? ?(\w* \w*) bag"
 for rule in rules:
     main_bag, *extra_bags = re.findall(regex, rule)
     bags[main_bag[1]] = extra_bags
@@ -18,7 +18,7 @@ def contains_number(bag_rules, main_bag):
         n, bag = other_bag
         num += int(n) * contains_number(bag_rules, bag)
         num += int(n)
-    print(f'{main_bag} can contain {num or 1} other bags')
+    print(f"{main_bag} can contain {num or 1} other bags")
     return num
 
 
@@ -34,4 +34,4 @@ def can_contain(bag_rules, first_bag):
 
 
 # print(len(can_contain(bags, 'shiny gold')))
-print(contains_number(bags, 'shiny gold'))
+print(contains_number(bags, "shiny gold"))

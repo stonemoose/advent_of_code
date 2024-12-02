@@ -30,14 +30,14 @@ def read_packets(r_line):
     type_id = int(r_line[3:6], 2)
 
     if type_id == 4:
-        num = ''
+        num = ""
         line_num = 6
         while line_num < len(r_line):
-            num += r_line[line_num+1:line_num+5]
-            if r_line[line_num] == '0':
+            num += r_line[line_num + 1 : line_num + 5]
+            if r_line[line_num] == "0":
                 break
             line_num += 5
-        return version, int(num, 2), line_num+5
+        return version, int(num, 2), line_num + 5
 
     else:
         op_type = int(r_line[6], 2)
@@ -66,11 +66,11 @@ def read_packets(r_line):
         return vers + version, num, l_num
 
 
-if __name__ == '__main__':
-    with open('input') as f:
+if __name__ == "__main__":
+    with open("input") as f:
         line = f.read().strip()
-        new_line = bin(int(line, 16))[2:].zfill(len(line)*4)
+        new_line = bin(int(line, 16))[2:].zfill(len(line) * 4)
 
     version, number, _ = read_packets(new_line)
-    print(f'Part 1: {version}')
-    print(f'Part 2: {number}')
+    print(f"Part 1: {version}")
+    print(f"Part 2: {number}")

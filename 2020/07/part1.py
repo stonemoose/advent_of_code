@@ -3,10 +3,10 @@ from collections import defaultdict
 
 bags = defaultdict(set)
 
-with open('input') as f:
-    rules = f.read().strip().replace('no other bags', '').splitlines()
+with open("input") as f:
+    rules = f.read().strip().replace("no other bags", "").splitlines()
 
-regex = r'(?:\d )?(\w* \w*) bag'
+regex = r"(?:\d )?(\w* \w*) bag"
 for rule in rules:
     main_bag, *extra_bags = re.findall(regex, rule)
     for bag in extra_bags:
@@ -24,4 +24,4 @@ def can_contain(bag_rules, first_bag):
     return seen
 
 
-print(len(can_contain(bags, 'shiny gold')))
+print(len(can_contain(bags, "shiny gold")))

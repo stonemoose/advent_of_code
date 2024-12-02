@@ -2,20 +2,20 @@ def to_postfix(line):
     stack = []
     output = []
     for char in line:
-        if char == '*':
-            if stack and not stack[-1] == '(':
+        if char == "*":
+            if stack and not stack[-1] == "(":
                 output.append(stack.pop())
             stack.append(char)
-        elif char == '+':
-            if stack and not stack[-1] == '(':
+        elif char == "+":
+            if stack and not stack[-1] == "(":
                 output.append(stack.pop())
             stack.append(char)
-        elif char == '(':
+        elif char == "(":
             stack.append(char)
-        elif char == ')':
+        elif char == ")":
             while stack:
                 char = stack.pop()
-                if char == '(':
+                if char == "(":
                     break
                 output.append(char)
         else:
@@ -29,20 +29,20 @@ def to_postfix_2(line):
     stack = []
     output = []
     for char in line:
-        if char == '*':
-            if stack and not stack[-1] == '(':
+        if char == "*":
+            if stack and not stack[-1] == "(":
                 output.append(stack.pop())
             stack.append(char)
-        elif char == '+':
-            if stack and stack[-1] == '+':
+        elif char == "+":
+            if stack and stack[-1] == "+":
                 output.append(stack.pop())
             stack.append(char)
-        elif char == '(':
+        elif char == "(":
             stack.append(char)
-        elif char == ')':
+        elif char == ")":
             while stack:
                 char = stack.pop()
-                if char == '(':
+                if char == "(":
                     break
                 output.append(char)
         else:
@@ -55,17 +55,23 @@ def to_postfix_2(line):
 def postfix_solve(postfix_list):
     stack = []
     for char in postfix_list:
-        if char == '*':
+        if char == "*":
             stack.append(stack.pop() * stack.pop())
-        elif char == '+':
+        elif char == "+":
             stack.append(stack.pop() + stack.pop())
         else:
             stack.append(char)
     return stack[0]
 
 
-with open('input') as f:
-    homework = f.read().strip().split('\n')
+with open("input") as f:
+    homework = f.read().strip().split("\n")
 
-print('Part 1: ', sum(postfix_solve(to_postfix(line.replace(' ', ''))) for line in homework))
-print('Part 2: ', sum(postfix_solve(to_postfix_2(line.replace(' ', ''))) for line in homework))
+print(
+    "Part 1: ",
+    sum(postfix_solve(to_postfix(line.replace(" ", ""))) for line in homework),
+)
+print(
+    "Part 2: ",
+    sum(postfix_solve(to_postfix_2(line.replace(" ", ""))) for line in homework),
+)

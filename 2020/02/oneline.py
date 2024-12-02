@@ -1,3 +1,4 @@
+# fmt: off
 import re
 
 print(sum(map(lambda x: int(x[0]) <= x[3].count(x[2]) <= int(x[1]), (re.split(r'-| |: ', l) for l in open('input').readlines()))))

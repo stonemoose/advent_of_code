@@ -1,6 +1,6 @@
 def flash(x, y, octopi):
-    for i in range(max(0, x-1), x+2):
-        for j in range(max(0, y-1), y+2):
+    for i in range(max(0, x - 1), x + 2):
+        for j in range(max(0, y - 1), y + 2):
             try:
                 octopi[i][j] += 1
                 if octopi[i][j] == 10:
@@ -9,7 +9,7 @@ def flash(x, y, octopi):
                 continue
 
 
-with open('input') as f:
+with open("input") as f:
     octopi = [[int(n) for n in line.strip()] for line in f.readlines()]
 
 flashes = 0
@@ -27,7 +27,7 @@ for step in range(1, 10000):
                 flashes += 1
 
     if step == 100:
-        print(f'Part 1: {flashes}')
+        print(f"Part 1: {flashes}")
     if not any(any(line) for line in octopi):
-        print(f'Part 2: {step}')
+        print(f"Part 2: {step}")
         break

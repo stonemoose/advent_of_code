@@ -1,6 +1,6 @@
 # target area: x=94..151, y=-156..-103
 
-print(f'Part 1: {155*156//2}')
+print(f"Part 1: {155*156//2}")
 
 x_min = 94
 x_max = 151
@@ -13,8 +13,8 @@ x_min_vel = 14
 x_max_vel = 151
 
 ans = 0
-for y in range(y_min_vel, y_max_vel+1):
-    for x in range(x_min_vel, x_max_vel+1):
+for y in range(y_min_vel, y_max_vel + 1):
+    for x in range(x_min_vel, x_max_vel + 1):
         pos_x, pos_y = 0, 0
         vel_x, vel_y = x, y
         while pos_x <= x_max and pos_y >= y_min:
@@ -28,4 +28,4 @@ for y in range(y_min_vel, y_max_vel+1):
                 break
 
 
-print(f'Part 2: {ans}')
+print(f"Part 2: {ans}")

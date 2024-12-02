@@ -4,11 +4,11 @@ import numpy as np
 
 def get_neighbours(x, y):
     if x:
-        yield (x-1, y)
+        yield (x - 1, y)
     if y:
-        yield (x, y-1)
-    yield (x+1, y)
-    yield (x, y+1)
+        yield (x, y - 1)
+    yield (x + 1, y)
+    yield (x, y + 1)
 
 
 def dijkstra(square, start):
@@ -38,11 +38,11 @@ def wrap_num(n):
     return np.mod(n, 9) + 1
 
 
-if __name__ == '__main__':
-    with open('input') as f:
+if __name__ == "__main__":
+    with open("input") as f:
         square = np.array([[int(n) for n in line.strip()] for line in f.readlines()])
 
-    print(f'Part 1: {dijkstra(square, (0, 0))[-1][-1]}')
+    print(f"Part 1: {dijkstra(square, (0, 0))[-1][-1]}")
 
     for axis in (0, 1):
         new_square = np.array(square)
@@ -50,5 +50,4 @@ if __name__ == '__main__':
             new_square = wrap_num(new_square)
             square = np.concatenate((square, new_square), axis=axis)
 
-
-    print(f'Part 2: {dijkstra(square, (0, 0))[-1][-1]}')
+    print(f"Part 2: {dijkstra(square, (0, 0))[-1][-1]}")

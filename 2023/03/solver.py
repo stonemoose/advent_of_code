@@ -9,6 +9,7 @@ ans1 = ans2 = 0
 def diagonal_symbol(data, i, start, end):
     def has_symbol(text):
         return re.search(r"[^0-9\.]", text)
+
     if i > 0:
         if has_symbol(data[i - 1][start - (start > 0) : end + (end < len(data[i]))]):
             return True

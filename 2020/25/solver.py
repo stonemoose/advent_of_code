@@ -19,8 +19,8 @@ def encrypt(subject_number, loop_size):
     return value
 
 
-with open('input') as f:
-    card_public, door_public = [int(n) for n in f.read().strip().split('\n')]
+with open("input") as f:
+    card_public, door_public = [int(n) for n in f.read().strip().split("\n")]
 
 
 print(find_loopsize(7, card_public))

@@ -26,17 +26,17 @@ def most_least_difference(formula_counter, formula):
     return most_common[0][1] - most_common[-1][1]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    with open('input') as f:
-        formula, pairs = f.read().strip().split('\n\n')
-    pair_rules = dict([p.split(' -> ') for p in pairs.split('\n')])
-    formula_counter = Counter(a+b for a, b in zip(formula[:-1], formula[1:]))
+    with open("input") as f:
+        formula, pairs = f.read().strip().split("\n\n")
+    pair_rules = dict([p.split(" -> ") for p in pairs.split("\n")])
+    formula_counter = Counter(a + b for a, b in zip(formula[:-1], formula[1:]))
 
     for _ in range(10):
         formula_counter = next_step(formula_counter, pair_rules)
-    print('Part 1: ', most_least_difference(formula_counter, formula))
+    print("Part 1: ", most_least_difference(formula_counter, formula))
 
     for _ in range(10, 40):
         formula_counter = next_step(formula_counter, pair_rules)
-    print('Part 2: ', most_least_difference(formula_counter, formula))
+    print("Part 2: ", most_least_difference(formula_counter, formula))

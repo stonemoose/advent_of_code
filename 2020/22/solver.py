@@ -1,6 +1,7 @@
 from copy import deepcopy
-with open('input') as f:
-    deck1, deck2 = [d.split('\n')[1:] for d in f.read().strip().split('\n\n')]
+
+with open("input") as f:
+    deck1, deck2 = [d.split("\n")[1:] for d in f.read().strip().split("\n\n")]
     deck1 = [int(card) for card in deck1]
     deck2 = [int(card) for card in deck2]
 

@@ -1,5 +1,5 @@
-with open('input') as f:
-    inputs = [line.split() for line in f.read().strip().split('\n')]
+with open("input") as f:
+    inputs = [line.split() for line in f.read().strip().split("\n")]
 
 
 accumulator = 0
@@ -10,12 +10,12 @@ while True:
     op, num = inputs[counter]
     visited.append(counter)
     num = int(num)
-    if op == 'acc':
+    if op == "acc":
         accumulator += num
         counter += 1
-    if op == 'jmp':
+    if op == "jmp":
         counter += num
-    if op == 'nop':
+    if op == "nop":
         counter += 1
     if counter in visited:
         break
