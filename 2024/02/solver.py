@@ -22,7 +22,7 @@ def is_safe(levels):
     return True
 
 
-def solve(parsed, problem_dampener=False):
+def num_safe_reports(parsed, problem_dampener=False):
     ans = 0
     for line in parsed:
         if is_safe(line):
@@ -37,15 +37,24 @@ def solve(parsed, problem_dampener=False):
     return ans
 
 
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = num_safe_reports(parsed)
+    p2 = num_safe_reports(parsed, True)
+    return p1, p2
+
+
 if __name__ == "__main__":
     puzzle = Puzzle(2024, 2)
 
     parsed = parse(puzzle.input_data)
 
     for example in puzzle.examples:
-        assert solve(parse(example.input_data)) == int(example.answer_a)
-    puzzle.answer_a = solve(parsed)
+        assert num_safe_reports(parse(example.input_data)) == int(example.answer_a)
+    puzzle.answer_a = num_safe_reports(parsed)
 
     for example in puzzle.examples:
-        assert solve(parse(example.input_data), True) == int(example.answer_b)
-    puzzle.answer_b = solve(parsed, True)
+        assert num_safe_reports(parse(example.input_data), True) == int(
+            example.answer_b
+        )
+    puzzle.answer_b = num_safe_reports(parsed, True)

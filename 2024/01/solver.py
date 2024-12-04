@@ -24,6 +24,13 @@ def part2(left, right):
     return ans
 
 
+def solve(input_data):
+    left, right = parse(input_data)
+    p1 = part1(left, right)
+    p2 = part2(left, right)
+    return p1, p2
+
+
 if __name__ == "__main__":
     puzzle = Puzzle(2024, 1)
 
