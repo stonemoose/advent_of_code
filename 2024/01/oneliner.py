@@ -1,4 +1,4 @@
 # fmt: off
 from aocd.models import Puzzle
-print(sum([abs(l-r) for l, r in zip(*map(sorted, zip(*[[int(n) for n in line.split()] for line in Puzzle(2024, 1).input_data.strip().split('\n')])))]))
-print((lambda ls, rs: sum([l*rs.count(l) for l in ls]))(*zip(*[[int(n) for n in line.split()] for line in Puzzle(2024, 1).input_data.strip().split('\n')])))
+print(sum([abs(l-r)for l,r in zip(*map(sorted,zip(*[map(int, l.split())for l in open('input').readlines()])))]))
+print((lambda l,r: sum([s*r.count(s)for s in l]))(*zip(*[map(int, l.split())for l in open('input').readlines()])))
