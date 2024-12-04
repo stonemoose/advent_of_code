@@ -1,4 +1,5 @@
 from aocd.models import Puzzle
+import aoc_functionality.grid_helper as gh
 
 
 def parse(input_data):
@@ -8,71 +9,50 @@ def parse(input_data):
     return out
 
 
-def helper(line, word="XMAS"):
-    ret = 0
-    for i in range(len(line)):
-        if line[i:].startswith(word):
-            ret += 1
-        elif line[i:].startswith(word[::-1]):
-            ret += 1
-    print(line, ret)
-    return ret
+def word_search(x, y, grid, word="XMAS", direction=None):
+    if word == "":
+        return 1
+    if not gh.coords_in_grid(x, y, grid):
+        return 0
+    if grid[x][y] != word[0]:
+        return 0
+    if direction:
+        nx = x + direction[0]
+        ny = y + direction[1]
+        return word_search(nx, ny, grid, word[1:], direction)
+
+    hits = 0
+    for d in gh.DIRECTIONS_ALL:
+        if word_search(x + d[0], y + d[1], grid, word[1:], d):
+            hits += 1
+    return hits
 
 
-def helper2(square):
-    diag1 = "".join(square[i][i] for i in range(3))
-    diag2 = "".join(square[i][-1 - i] for i in range(3))
+def x_mas(square):
+    if len(square) < 3 or len(square[0]) < 3:
+        return 0
+    diag1 = "".join(square[i][i] for i in range(len(square)))
+    diag2 = "".join(square[i][-1 - i] for i in range(len(square[0])))
     if diag1 in ("MAS", "SAM") and diag2 in ("MAS", "SAM"):
         return 1
     return 0
 
 
-def solve(parsed):
+def solve(input_data):
+    parsed = parse(input_data)
     p1 = p2 = 0
-    for line in parsed:
-        p1 += helper(line)
-        pass
-    for i in range(len(parsed[0])):
-        pass
-        p1 += helper("".join([l[i] for l in parsed]))
-        p1 += helper(
-            "".join([l[i + j] for j, l in enumerate(parsed) if i + j < len(l)])
-        )
-        p1 += helper("".join([l[i - j] for j, l in enumerate(parsed) if i - j >= 0]))
-    for i, line in enumerate(parsed[1:], 1):
-        pass
-        p1 += helper("".join([l[j] for j, l in enumerate(parsed[i:])]))
-        p1 += helper("".join([l[-j] for j, l in enumerate(parsed[i:], 1)]))
-
-    for i in range(len(parsed) - 2):
-        for j in range(len(parsed[0]) - 2):
-            square = [line[j : j + 3] for line in parsed[i : i + 3]]
-            p2 += helper2(square)
+    for x in range(len(parsed)):
+        for y in range(len(parsed[0])):
+            p1 += word_search(x, y, parsed)
+            square = [line[y : y + 3] for line in parsed[x : x + 3]]
+            p2 += x_mas(square)
 
     return p1, p2
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2024, 4)
-
-    parsed = parse(puzzle.input_data)
-
-    p1, p2 = solve(parsed)
-    ex = """
-MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX
-"""
-    assert solve(parse(ex))[0] == 18
-    if p1:
-        puzzle.answer_a = p1
-    assert solve(parse(ex))[1] == 9
-    if p2:
-        puzzle.answer_b = p2
+    p1, p2 = solve(puzzle.input_data)
+    print(p1, p2)
+    puzzle.answer_a = p1
+    puzzle.answer_b = p2
