@@ -1,14 +1,12 @@
 from aocd.models import Puzzle
 from collections import defaultdict
 
-puzzle = Puzzle(2015, 7)
-
 
 def parse(input_data):
     return dict(l.split(" -> ")[::-1] for l in input_data.split("\n"))
 
 
-def solve(input_data, ans_wire):
+def solve(input_data, ans_wire="a"):
     wires = parse(input_data)
     wire_cache = {}
 
@@ -43,4 +41,6 @@ def solve(input_data, ans_wire):
     return part1, part2
 
 
-puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data, "a")
+if __name__ == "__main__":
+    puzzle = Puzzle(2015, 7)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data, "a")

@@ -4,8 +4,6 @@ import math
 
 from aocd.models import Puzzle
 
-puzzle = Puzzle(2015, 9)
-
 
 def parse(input_data):
     distances = defaultdict(dict)
@@ -16,7 +14,8 @@ def parse(input_data):
     return distances
 
 
-def solve(parsed):
+def solve(input_data):
+    parsed = parse(input_data)
     best = math.inf
     worst = 0
 
@@ -32,4 +31,6 @@ def solve(parsed):
     return best, worst
 
 
-puzzle.answer_a, puzzle.answer_b = solve(parse(puzzle.input_data))
+if __name__ == "__main__":
+    puzzle = Puzzle(2015, 9)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data)

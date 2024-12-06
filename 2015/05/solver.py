@@ -18,6 +18,13 @@ def is_nice_v2(word):
     return bool(re.search(double_pair, word)) and bool(re.search(twice, word))
 
 
+def solve(input_data):
+    words = input_data.split("\n")
+    p1 = sum([is_nice(word) for word in words])
+    p2 = sum([is_nice_v2(word) for word in words])
+    return p1, p2
+
+
 if __name__ == "__main__":
     with open("input") as f:
         words = f.readlines()

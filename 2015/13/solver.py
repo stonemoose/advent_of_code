@@ -17,7 +17,7 @@ def parse(input_data):
     return parsed
 
 
-def solve(seating_wishes):
+def solver(seating_wishes):
     best = -math.inf
     for seating in permutations(seating_wishes):
         happiness = 0
@@ -29,14 +29,22 @@ def solve(seating_wishes):
     return best
 
 
-if __name__ == "__main__":
-    puzzle = Puzzle(2015, 13)
-
-    seating_wishes = parse(puzzle.input_data)
-    puzzle.answer_a = solve(seating_wishes)
+def solve(input_data):
+    seating_wishes = parse(input_data)
+    p1 = solver(seating_wishes)
 
     new_seating_wishes = seating_wishes.copy()
     for person in seating_wishes:
         new_seating_wishes["me"][person] = 0
         new_seating_wishes[person]["me"] = 0
-    puzzle.answer_b = solve(new_seating_wishes)
+    p2 = solver(new_seating_wishes)
+
+    return p1, p2
+
+
+if __name__ == "__main__":
+    puzzle = Puzzle(2015, 13)
+
+    p1, p2 = solve(puzzle.input_data)
+    puzzle.answer_a = p1
+    puzzle.answer_b = p2

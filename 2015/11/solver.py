@@ -3,14 +3,9 @@ import string
 
 from aocd.models import Puzzle
 
-puzzle = Puzzle(2015, 11)
-
 
 def parse(input_data):
     return input_data.strip()
-
-
-letters = string.ascii_lowercase
 
 
 def good_password(pw):
@@ -21,7 +16,7 @@ def good_password(pw):
         return False
 
     for i in range(len(pw) - 2):
-        if pw[i : i + 3] in letters:
+        if pw[i : i + 3] in string.ascii_lowercase:
             return True
     return False
 
@@ -40,7 +35,7 @@ def next_password(pw):
     return "".join(new_pw)
 
 
-def solve(password):
+def solver(password):
     password = next_password(password)
     while not good_password(password):
         password = next_password(password)
@@ -48,5 +43,13 @@ def solve(password):
     return password
 
 
-puzzle.answer_a = solve(parse(puzzle.input_data))
-puzzle.answer_b = solve(puzzle.answer_a)
+def solve(input_data):
+    p1 = solver(parse(input_data))
+    p2 = solver(p1)
+    return p1, p2
+
+
+if __name__ == "__main__":
+    puzzle = Puzzle(2015, 11)
+    puzzle.answer_a = solver(parse(puzzle.input_data))
+    puzzle.answer_b = solver(puzzle.answer_a)

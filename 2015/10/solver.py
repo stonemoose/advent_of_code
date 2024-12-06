@@ -1,13 +1,11 @@
 from aocd.models import Puzzle
 
-puzzle = Puzzle(2015, 10)
-
 
 def parse(input_data):
     return list(input_data)
 
 
-def solve(sequence, iterations):
+def solver(sequence, iterations):
     for i in range(iterations):
         next = []
         current = sequence[0]
@@ -25,5 +23,14 @@ def solve(sequence, iterations):
     return len(sequence)
 
 
-puzzle.answer_a = solve(parse(puzzle.input_data), 40)
-puzzle.answer_b = solve(parse(puzzle.input_data), 50)
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed, 40)
+    p2 = solver(parsed, 50)
+    return p1, p2
+
+
+if __name__ == "__main__":
+    puzzle = Puzzle(2015, 10)
+    puzzle.answer_a = solver(parse(puzzle.input_data), 40)
+    puzzle.answer_b = solver(parse(puzzle.input_data), 50)

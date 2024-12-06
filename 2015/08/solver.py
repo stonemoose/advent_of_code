@@ -8,10 +8,11 @@ def parse(input_data):
 
 
 def solve(input_data):
-    full = len("".join(input_data))
-    represented = len("".join([eval(l) for l in input_data]))
-    escaped = len("".join([repr(l).replace('"', '\\"') for l in input_data]))
+    parsed = parse(input_data)
+    full = len("".join(parsed))
+    represented = len("".join([eval(l) for l in parsed]))
+    escaped = len("".join([repr(l).replace('"', '\\"') for l in parsed]))
     return full - represented, escaped - full
 
 
-puzzle.answer_a, puzzle.answer_b = solve(parse(puzzle.input_data))
+puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data)

@@ -26,22 +26,29 @@ def turn_off(start, end, lights, lights2):
                 lights2[x][y] -= 1
 
 
-lights = [[0] * 1000 for i in range(1000)]
-lights2 = [[0] * 1000 for i in range(1000)]
+def solve(input_data):
+    lights = [[0] * 1000 for i in range(1000)]
+    lights2 = [[0] * 1000 for i in range(1000)]
+
+    instructions = [line.strip() for line in input_data.split("\n")]
+
+    for inst in instructions:
+        match inst.split():
+            case ["toggle", start, "through", end]:
+                toggle(start.split(","), end.split(","), lights, lights2)
+            case ["turn", "on", start, "through", end]:
+                turn_on(start.split(","), end.split(","), lights, lights2)
+            case ["turn", "off", start, "through", end]:
+                turn_off(start.split(","), end.split(","), lights, lights2)
+
+    p1 = sum(sum(n) for n in lights)
+    p2 = sum(sum(n) for n in lights2)
+    return p1, p2
 
 
-with open("2015/06/input") as f:
-    instructions = [line.strip() for line in f.readlines()]
+if __name__ == "__main__":
+    with open("2015/06/input") as f:
+        p1, p2 = solve(f.read())
 
-
-for inst in instructions:
-    match inst.split():
-        case ["toggle", start, "through", end]:
-            toggle(start.split(","), end.split(","), lights, lights2)
-        case ["turn", "on", start, "through", end]:
-            turn_on(start.split(","), end.split(","), lights, lights2)
-        case ["turn", "off", start, "through", end]:
-            turn_off(start.split(","), end.split(","), lights, lights2)
-
-print("part 1:", sum(sum(n) for n in lights))
-print("part 2:", sum(sum(n) for n in lights2))
+    print("part 1:", p1)
+    print("part 2:", p2)

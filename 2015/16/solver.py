@@ -7,7 +7,7 @@ def parse(input_data):
     for line in input_data.strip().split("\n"):
         name, info = line.split(":", 1)
         aunts[name] = {
-            key: int(value) for key, value in findall("([a-z]+): (\d+)", info)
+            key: int(value) for key, value in findall(r"([a-z]+): (\d+)", info)
         }
     return aunts
 
@@ -40,10 +40,8 @@ def solve_2(aunts, correct_sue):
     return "Did not find any match!!!!"
 
 
-if __name__ == "__main__":
-    puzzle = Puzzle(2015, 16)
-
-    parsed = parse(puzzle.input_data)
+def solve(input_data):
+    parsed = parse(input_data)
     correct_sue = {
         "children": 3,
         "cats": 7,
@@ -56,7 +54,16 @@ if __name__ == "__main__":
         "cars": 2,
         "perfumes": 1,
     }
-    print(solve_1(parsed, correct_sue))
-    print(solve_2(parsed, correct_sue))
-    puzzle.answer_a = int(solve_1(parsed, correct_sue).split()[-1])
-    puzzle.answer_b = int(solve_2(parsed, correct_sue).split()[-1])
+    p1 = int(solve_1(parsed, correct_sue).split()[-1])
+    p2 = int(solve_2(parsed, correct_sue).split()[-1])
+    return p1, p2
+
+
+if __name__ == "__main__":
+    puzzle = Puzzle(2015, 16)
+
+    p1, p2 = solve(puzzle.input_data)
+    print(p1)
+    print(p2)
+    puzzle.answer_a = p1
+    puzzle.answer_b = p2
