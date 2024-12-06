@@ -6,7 +6,7 @@ def parse(input_data):
     return [list(line) for line in input_data.strip().split("\n")]
 
 
-def solve(parsed, start=(-1, 0, "right")):
+def solver(parsed, start=(-1, 0, "right")):
     energized = np.zeros_like(parsed, dtype=int)
     beams = [start]
     before = set()
@@ -108,20 +108,27 @@ def solve(parsed, start=(-1, 0, "right")):
 def get_best_solve(parsed):
     best = 0
     for y in range(len(parsed)):
-        best = max(best, solve(parsed, (-1, y, "right")))
-        best = max(best, solve(parsed, (len(parsed[0]), y, "left")))
+        best = max(best, solver(parsed, (-1, y, "right")))
+        best = max(best, solver(parsed, (len(parsed[0]), y, "left")))
     for x in range(len(parsed[0])):
-        best = max(best, solve(parsed, (x, -1, "down")))
-        best = max(best, solve(parsed, (x, len(parsed), "up")))
+        best = max(best, solver(parsed, (x, -1, "down")))
+        best = max(best, solver(parsed, (x, len(parsed), "up")))
     return best
+
+
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed)
+    p2 = get_best_solve(parsed)
+    return p1, p2
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 16)
 
-    parsed_ex = parse(puzzle.example_data)
-    assert solve(parsed_ex) == 46
+    parsed_ex = parse(puzzle.examples[0].input_data)
+    assert solver(parsed_ex) == 46
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
+    puzzle.answer_a = solver(parsed)
     assert get_best_solve(parsed_ex) == 51
     puzzle.answer_b = get_best_solve(parsed)

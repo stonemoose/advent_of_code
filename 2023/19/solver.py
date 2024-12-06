@@ -67,7 +67,8 @@ def check_part(part, workflow_dict):
     return workflow == "A"
 
 
-def solve(parsed):
+def solve(input_data):
+    parsed = parse(input_data)
     workflows, parts = parsed
     total_val = 0
     workflow_dict = {}
@@ -89,7 +90,5 @@ def solve(parsed):
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 19)
-    example = parse(puzzle.example_data)
-    assert solve(example) == (19114, 167409079868000)
-    parsed = parse(puzzle.input_data)
-    puzzle.answer_a, puzzle.answer_b = solve(parsed)
+    assert solve(puzzle.examples[0].input_data) == (19114, 167409079868000)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data)

@@ -72,20 +72,27 @@ def dijkstra(start, grid, min_moves, max_moves):
     return np.minimum(vertical_weights, horizontal_weights)
 
 
-def solve(parsed, min_moves=1, max_moves=3):
+def solver(parsed, min_moves=1, max_moves=3):
     start = (0, 0)
     distance_map = dijkstra(start, parsed, min_moves, max_moves)
     return int(distance_map[-1, -1])
+
+
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed)
+    p2 = solver(parsed, 4, 10)
+    return p1, p2
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 17)
 
     parsed_ex = parse(puzzle.example_data)
-    assert solve(parsed_ex) == 102
+    assert solver(parsed_ex) == 102
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
+    puzzle.answer_a = solver(parsed)
 
-    assert solve(parsed_ex, 4, 10) == 94
+    assert solver(parsed_ex, 4, 10) == 94
     parsed = parse(puzzle.input_data)
-    puzzle.answer_b = solve(parsed, 4, 10)
+    puzzle.answer_b = solver(parsed, 4, 10)

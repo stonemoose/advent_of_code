@@ -44,10 +44,11 @@ def parse(input_data):
     return [make_brick(*line.split("~")) for line in input_data.strip().split("\n")]
 
 
-def fall(bricks: list[Brick]):
+def fall(bricks: list[Brick], should_print=False):
     structure: list[Brick] = []
     for i, brick in enumerate(bricks):
-        print_progress_bar(i, len(bricks) - 1)
+        if should_print:
+            print_progress_bar(i, len(bricks) - 1)
         new_coords = set()
         falling = True
         while falling:
@@ -75,14 +76,13 @@ def fall(bricks: list[Brick]):
     return desintegratable, desintegrate_consequence
 
 
-def solve(bricks):
-    return fall(sorted(bricks))
+def solve(input_data, should_print=False):
+    bricks = parse(input_data)
+    return fall(sorted(bricks), should_print=should_print)
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 22)
-    example = parse(puzzle.example_data)
-    assert solve(example) == (5, 7)
+    assert solve(puzzle.examples[0].input_data) == (5, 7)
 
-    parsed = parse(puzzle.input_data)
-    puzzle.answer_a, puzzle.answer_b = solve(parsed)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data, should_print=True)

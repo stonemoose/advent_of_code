@@ -44,7 +44,7 @@ def solve_part2(parsed):
     return shoelace(corners) + edge // 2 + 1
 
 
-def solve(parsed):
+def solve_part1(parsed):
     corners = [(0, 0)]
     edge = 0
     for direction, meters, _ in parsed:
@@ -63,11 +63,18 @@ def solve(parsed):
     return shoelace(corners) + edge // 2 + 1
 
 
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solve_part1(parsed)
+    p2 = solve_part2(parsed)
+    return p1, p2
+
+
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 18)
     example = parse(puzzle.example_data)
-    assert solve(example) == 62
+    assert solve_part1(example) == 62
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
+    puzzle.answer_a = solve_part1(parsed)
     assert solve_part2(example) == 952408144115
     puzzle.answer_b = solve_part2(parsed)

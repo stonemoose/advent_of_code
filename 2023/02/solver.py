@@ -8,25 +8,29 @@ def parse_games(line):
     return game_id, game
 
 
-with open("input") as f:
-    data = f.read().strip().split("\n")
+def solve(input_data):
+    p1 = p2 = 0
+
+    for line in input_data.split("\n"):
+        g_id, game = parse_games(line)
+        max_dict = {"green": 0, "red": 0, "blue": 0}
+
+        for round in game:
+            for value_color in round:
+                value, color = value_color.split()
+                max_dict[color] = max(max_dict[color], int(value))
+
+        p2 += math.prod(max_dict.values())
+        if max_dict["green"] <= 13 and max_dict["red"] <= 12 and max_dict["blue"] <= 14:
+            p1 += g_id
+
+    return p1, p2
 
 
-part1 = part2 = 0
+if __name__ == "__main__":
 
-for line in data:
-    g_id, game = parse_games(line)
-    max_dict = {"green": 0, "red": 0, "blue": 0}
+    with open("input") as f:
+        p1, p2 = solve(f.read().strip())
 
-    for round in game:
-        for value_color in round:
-            value, color = value_color.split()
-            max_dict[color] = max(max_dict[color], int(value))
-
-    part2 += math.prod(max_dict.values())
-    if max_dict["green"] <= 13 and max_dict["red"] <= 12 and max_dict["blue"] <= 14:
-        part1 += g_id
-
-
-print("Part 1:", part1)
-print("Part 2:", part2)
+    print("Part 1:", p1)
+    print("Part 2:", p2)

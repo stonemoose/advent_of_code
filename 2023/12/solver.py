@@ -39,7 +39,7 @@ def possible_arrangements(line, groups, current_group=0):
             return 0
 
 
-def solve(rows, part=1):
+def solver(rows, part=1):
     sum_possible = 0
     for springs, groups in rows:
         if part == 2:
@@ -49,6 +49,13 @@ def solve(rows, part=1):
         sum_possible += possible_arrangements(springs, groups)
 
     return sum_possible
+
+
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed)
+    p2 = solver(parsed, 2)
+    return p1, p2
 
 
 if __name__ == "__main__":
@@ -63,8 +70,8 @@ if __name__ == "__main__":
 ?###???????? 3,2,1
     """
     parsed_ex = parse(ex)
-    assert solve(parsed_ex) == 21
+    assert solver(parsed_ex) == 21
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
-    assert solve(parsed_ex, 2) == 525152
-    puzzle.answer_b = solve(parsed, 2)
+    puzzle.answer_a = solver(parsed)
+    assert solver(parsed_ex, 2) == 525152
+    puzzle.answer_b = solver(parsed, 2)

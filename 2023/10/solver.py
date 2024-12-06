@@ -48,7 +48,8 @@ def print_map(visited, enclosed, parsed_data, outside):
         print()
 
 
-def solve(parsed_data):
+def solve(input_data, should_print=False):
+    parsed_data = parse(input_data)
     distance = [[0] * len(parsed_data[0]) for _ in range(len(parsed_data))]
     enclosed = [[0] * len(parsed_data[0]) for _ in range(len(parsed_data))]
     loop_contained = set()
@@ -115,8 +116,9 @@ def solve(parsed_data):
             - num_enclosed
             - 1  # start
         )
-    print_map(visited, enclosed, parsed_data, outside)
-    print(furthest, num_enclosed)
+    if should_print:
+        print_map(visited, enclosed, parsed_data, outside)
+        print(furthest, num_enclosed)
     return furthest, num_enclosed
 
 
@@ -159,14 +161,10 @@ L--J.L7...LJS7F-7L7.
 ....FJL-7.||.||||...
 ....L---J.LJ.LJLJ...
 """
-    parsed_example = parse(example)
-    if solve(parsed_example)[1] != 4:
+    if solve(example)[1] != 4:
         quit()
-    parsed_example = parse(example2)
-    if solve(parsed_example)[1] != 8:
+    if solve(example2)[1] != 8:
         quit()
-    parsed_example = parse(example3)
-    if solve(parsed_example)[1] != 10:
+    if solve(example3)[1] != 10:
         quit()
-    parsed_data = parse(puzzle.input_data)
-    puzzle.answer_a, puzzle.answer_b = solve(parsed_data)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.parsed, should_print=True)

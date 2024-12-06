@@ -34,7 +34,7 @@ def smudged_mirror_point(rock):
                 return i
 
 
-def solve(parsed, part=1):
+def solver(parsed, part=1):
     mirror_func = mirror_point if part == 1 else smudged_mirror_point
     notes = 0
     for rock in parsed:
@@ -44,12 +44,19 @@ def solve(parsed, part=1):
     return notes
 
 
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed)
+    p2 = solver(parsed, 2)
+    return p1, p2
+
+
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 13)
 
     parsed_ex = parse(puzzle.example_data)
-    assert solve(parsed_ex) == 405
+    assert solver(parsed_ex) == 405
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
-    assert solve(parsed_ex, 2) == 400
-    puzzle.answer_b = solve(parsed, 2)
+    puzzle.answer_a = solver(parsed)
+    assert solver(parsed_ex, 2) == 400
+    puzzle.answer_b = solver(parsed, 2)

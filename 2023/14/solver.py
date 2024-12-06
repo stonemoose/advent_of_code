@@ -76,7 +76,7 @@ def spin_cycle(stones, cycles):
     return stones
 
 
-def solve(parsed, tilts=-1):
+def solver(parsed, tilts=-1):
     ans = 0
     if tilts == -1:
         new_stones = tilt_north(parsed)
@@ -90,12 +90,19 @@ def solve(parsed, tilts=-1):
     return ans
 
 
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed)
+    p2 = solver(parsed, 1_000_000_000)
+    return p1, p2
+
+
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 14)
 
     parsed_ex = parse(puzzle.example_data)
-    assert solve(parsed_ex) == 136
+    assert solver(parsed_ex) == 136
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
-    assert solve(parsed_ex, 1_000_000_000) == 64
-    puzzle.answer_b = solve(parsed, 1_000_000_000)
+    puzzle.answer_a = solver(parsed)
+    assert solver(parsed_ex, 1_000_000_000) == 64
+    puzzle.answer_b = solver(parsed, 1_000_000_000)

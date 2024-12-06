@@ -35,9 +35,8 @@ def map_next_category_range(category, maps):
     return next_category
 
 
-if __name__ == "__main__":
-    with open("input") as f:
-        text = f.read().strip().split("\n\n")
+def solve(input_data):
+    text = input_data.split("\n\n")
 
     seeds = [int(t) for t in text[0].split(":")[1].split()]
     range_seeds = [
@@ -51,5 +50,15 @@ if __name__ == "__main__":
             maps[(mapping[1], mapping[1] + mapping[2] - 1)] = mapping[0] - mapping[1]
         seeds = map_next_category(seeds, maps)
         range_seeds = map_next_category_range(range_seeds, maps)
-    print("Part 1: ", min(seeds))
-    print("Part 2: ", min(range_seeds)[0])
+
+    p1 = min(seeds)
+    p2 = min(range_seeds)[0]
+    return p1, p2
+
+
+if __name__ == "__main__":
+    with open("input") as f:
+        p1, p2 = solve(f.read().strip)
+
+    print("part 1: ", p1)
+    print("part 2: ", p2)

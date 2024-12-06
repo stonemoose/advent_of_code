@@ -35,7 +35,7 @@ def print_map(universe, empty_y, empty_x):
         print()
 
 
-def solve(universe, expand=2, should_print=False):
+def solver(universe, expand=2, should_print=False):
     empty_y = []
     empty_x = []
     for i in range(len(universe[0])):
@@ -62,17 +62,23 @@ def solve(universe, expand=2, should_print=False):
             coord1, coord2, expand, (empty_x, empty_y)
         )
 
-    print(total_dist)
     return total_dist
+
+
+def solve(input_data):
+    parsed = parse(input_data)
+    p1 = solver(parsed)
+    p2 = solver(parsed, 1_000_000)
+    return p1, p2
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 11)
 
     parsed_ex = parse(puzzle.example_data)
-    assert solve(parsed_ex) == 374
-    assert solve(parsed_ex, 10) == 1030
-    assert solve(parsed_ex, 100, True) == 8410
+    assert solver(parsed_ex) == 374
+    assert solver(parsed_ex, 10) == 1030
+    assert solver(parsed_ex, 100, True) == 8410
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed)
-    puzzle.answer_b = solve(parsed, 1_000_000, True)
+    puzzle.answer_a = solver(parsed)
+    puzzle.answer_b = solver(parsed, 1_000_000, True)

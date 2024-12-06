@@ -133,7 +133,8 @@ def connect_intersections(grid, start):
         connect_intersections(grid, (x, y))
 
 
-def solve(parsed):
+def solve(input_data):
+    parsed = parse(input_data)
     start = (0, int(np.where(parsed[0] == ".")[0]))
     parsed[start] = Intersection(up="#", left="#", right="#", down="v", coords=start)
     connect_intersections(parsed, start)
@@ -151,8 +152,5 @@ def print_map(parsed):
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 23)
 
-    parsed_ex = parse(puzzle.example_data)
-    print_map(parsed_ex)
-    assert solve(parsed_ex) == (94, 154)
-    parsed = parse(puzzle.input_data)
-    puzzle.answer_a, puzzle.answer_b = solve(parsed)
+    assert solve(puzzle.examples[0].input_data) == (94, 154)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data)

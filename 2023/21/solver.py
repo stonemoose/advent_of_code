@@ -33,7 +33,7 @@ def print_garden(virt_garden, gardens, garden):
     print()
 
 
-def solve(garden, steps_left):
+def solver(garden, steps_left, should_print=False):
     @cache
     def filled_out(possible_spots):
         for x in range(0, len(garden)):
@@ -71,19 +71,21 @@ def solve(garden, steps_left):
     for steps_taken in range(steps_left):
         if not gardens:
             break
-        print_progress_bar(
-            steps_taken,
-            steps_left - 1,
-            suffix=f"{len(set(tuple(g) for g in gardens.values()))}",
-        )
+        if should_print:
+            print_progress_bar(
+                steps_taken,
+                steps_left - 1,
+                suffix=f"{len(set(tuple(g) for g in gardens.values()))}",
+            )
         next_gardens = defaultdict(set)
         for virt_garden, spots in gardens.items():
             possible_spots, above, below, left, right = find_possible_spots(
                 frozenset(spots)
             )
             if filled_out(frozenset(possible_spots)):
-                print(f"filled_out {virt_garden}, len = {len(possible_spots)}")
-                print_garden(virt_garden, gardens, garden)
+                if should_print:
+                    print(f"filled_out {virt_garden}, len = {len(possible_spots)}")
+                    print_garden(virt_garden, gardens, garden)
                 next_gardens.pop(virt_garden, None)
                 if (steps_left - steps_taken) % 2:
                     possible_spots = find_possible_spots(frozenset(possible_spots))[0]
@@ -107,16 +109,24 @@ def solve(garden, steps_left):
         gardens = next_gardens
     ret = sum(len(possible_spots) for possible_spots in gardens.values())
     ret += sum(ended_gardens.values())
-    print(f"sum after {steps_taken+1}:", ret)
+    if should_print:
+        print(f"sum after {steps_taken+1}:", ret)
     return ret
+
+
+def solve(input_data, should_print=False):
+    parsed = parse(input_data)
+    p1 = solver(parsed, 64, should_print=should_print)
+    p2 = 0
+    return p1, p2
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 21)
     example = parse(puzzle.example_data)
-    assert solve(example, 6) == 16
+    assert solver(example, 6) == 16
     parsed = parse(puzzle.input_data)
-    puzzle.answer_a = solve(parsed, 64)
+    puzzle.answer_a = solver(parsed, 64)
     # assert solve(example, 500) == 167004
     # assert solve(example, 26501365) == 16733044
-    assert solve(example, 5000) == 16733044
+    assert solver(example, 5000) == 16733044

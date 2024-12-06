@@ -1,10 +1,5 @@
 import re
 
-with open("input") as f:
-    data = f.read().strip().split("\n")
-
-ans1 = ans2 = 0
-
 
 def diagonal_symbol(data, i, start, end):
     def has_symbol(text):
@@ -31,14 +26,14 @@ def diagonal_symbol(data, i, start, end):
 def gear_ratio(data, i, start, end):
     ans = 0
     if i > 0:
-        for match in re.finditer("\d+", data[i - 1]):
+        for match in re.finditer(r"\d+", data[i - 1]):
             if set(range(match.start(), match.end() + 1)) & set(range(start, end + 1)):
                 if not ans:
                     ans = int(match[0])
                 else:
                     return ans * int(match[0])
 
-    for match in re.finditer("\d+", data[i]):
+    for match in re.finditer(r"\d+", data[i]):
         if set(range(match.start(), match.end() + 1)) & set(range(start, end + 1)):
             if not ans:
                 ans = int(match[0])
@@ -46,7 +41,7 @@ def gear_ratio(data, i, start, end):
                 return ans * int(match[0])
 
     if i < len(data) - 1:
-        for match in re.finditer("\d+", data[i + 1]):
+        for match in re.finditer(r"\d+", data[i + 1]):
             if set(range(match.start(), match.end() + 1)) & set(range(start, end + 1)):
                 if not ans:
                     ans = int(match[0])
@@ -54,13 +49,26 @@ def gear_ratio(data, i, start, end):
                     return ans * int(match[0])
 
 
-for i, line in enumerate(data):
-    for match in re.finditer("\d+", line):
-        if diagonal_symbol(data, i, match.start(), match.end()):
-            ans1 += int(match[0])
-    for match in re.finditer("\*", line):
-        gr = gear_ratio(data, i, match.start(), match.end())
-        if gr:
-            ans2 += gr
-print(ans1)
-print(ans2)
+def solve(input_data):
+    data = input_data.split("\n")
+
+    ans1 = ans2 = 0
+
+    for i, line in enumerate(data):
+        for match in re.finditer(r"\d+", line):
+            if diagonal_symbol(data, i, match.start(), match.end()):
+                ans1 += int(match[0])
+        for match in re.finditer(r"\*", line):
+            gr = gear_ratio(data, i, match.start(), match.end())
+            if gr:
+                ans2 += gr
+
+    return ans1, ans2
+
+
+if __name__ == "__main__":
+    with open("input") as f:
+        ans1, ans2 = solve(f.read().strip())
+
+    print("Part 1:", ans1)
+    print("Part 2:", ans2)

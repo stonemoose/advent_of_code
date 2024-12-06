@@ -27,7 +27,6 @@ def solve(input_data):
         p1 += future
         p2 += past
 
-    print(p1, p2)
     return p1, p2
 
 

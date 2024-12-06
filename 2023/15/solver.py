@@ -14,7 +14,8 @@ def get_hash(line):
     return val
 
 
-def solve(parsed):
+def solve(input_data):
+    parsed = parse(input_data)
     boxes = {i: [] for i in range(256)}
     focal_lengths = {}
     sum_hashes = 0
@@ -45,8 +46,6 @@ def solve(parsed):
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 15)
 
-    parsed_ex = parse(puzzle.example_data)
-    assert solve(parsed_ex) == (1320, 145)
+    assert solve(puzzle.examples[0].input_data) == (1320, 145)
 
-    parsed = parse(puzzle.input_data)
-    puzzle.answer_a, puzzle.answer_b = solve(parsed)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data)

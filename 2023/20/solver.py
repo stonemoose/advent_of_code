@@ -1,7 +1,6 @@
 from aocd.models import Puzzle
 from aoc_functionality.util import print_progress_bar
 import math
-import re
 
 
 class Module:
@@ -87,7 +86,8 @@ def setup(parsed):
     return modules
 
 
-def solve(parsed):
+def solve(input_data):
+    parsed = parse(input_data)
     modules = setup(parsed)
     cycles = {mod: None for mod in modules["vf"].inputs}
     low_pulses = 0
@@ -125,5 +125,4 @@ def solve(parsed):
 
 if __name__ == "__main__":
     puzzle = Puzzle(2023, 20)
-    parsed = parse(puzzle.input_data)
-    puzzle.answer_a, puzzle.answer_b = solve(parsed)
+    puzzle.answer_a, puzzle.answer_b = solve(puzzle.input_data)
