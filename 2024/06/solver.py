@@ -55,9 +55,11 @@ def solve(input_data):
         for j, char in enumerate(line):
             if not ((i, j) in visited and char == "."):
                 continue
-            obstructed_grid = copy.deepcopy(grid)
-            obstructed_grid[i][j] = "#"
-            p2 += guard_path(obstructed_grid, pos, direction)[1]
+            grid[i][j] = "#"
+            start_dir = visited[(i, j)][0]
+            start_pos = (i - start_dir[0], j - start_dir[1])
+            p2 += guard_path(grid, start_pos, start_dir)[1]
+            grid[i][j] = "."
 
     return p1, p2
 
