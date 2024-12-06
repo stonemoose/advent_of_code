@@ -21,10 +21,7 @@ def parse(input_data):
 
 def helper(line, rules):
     seen = set()
-    print(rules)
     for thing in line:
-        print(thing)
-        print(seen)
         if thing in rules and rules[thing] & seen:
             return 0
         seen.add(thing)
@@ -55,12 +52,11 @@ def solve(input_data):
 
 if __name__ == "__main__":
     puzzle = Puzzle(2024, 5)
-    p1, p2 = solve(puzzle.examples[0].input_data)
-    print(p1)
-    assert p1 == 143
-    assert p2 == 123
+    for example in puzzle.examples:
+        ex1, ex2 = solve(example.input_data)
+        assert ex1 == int(example.answer_a)
+        assert ex2 == int(example.answer_b)
     p1, p2 = solve(puzzle.input_data)
-    print(p1, p2)
     if p1:
         puzzle.answer_a = p1
     if p2:
