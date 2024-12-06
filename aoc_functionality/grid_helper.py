@@ -5,14 +5,13 @@ DIRECTIONS_ALL = DIRECTIONS_STRAIGHT + DIRECTIONS_DIAGONAL
 
 
 def get_neighbours(x, y, max_x, max_y, min_x=0, min_y=0, straight=True, diagonal=False):
-    if not straight or diagonal:
+    if not (straight or diagonal):
         raise Exception("No direction given")
     directions = []
     if diagonal:
         directions += DIRECTIONS_DIAGONAL
-    else:
-        # top, right, bottom, left
-        directions = DIRECTIONS_STRAIGHT
+    if straight:
+        directions += DIRECTIONS_STRAIGHT
     for dir_x, dir_y in directions:
         neighbour_x = x + dir_x
         neighbour_y = y + dir_y
@@ -32,7 +31,7 @@ def print_grid(grid, boolean=False):
                 if char:
                     print("#", end="")
                 else:
-                    print(" ", end="")
+                    print(".", end="")
             else:
                 print(char, end="")
         print()
