@@ -1,52 +1,37 @@
 import re
+from collections import defaultdict
 from aocd.models import Puzzle
 
 
+class Page(int):
+    rulebook = defaultdict(set)
+
+    def __new__(cls, num):
+        return super().__new__(cls, num)
+
+    def __lt__(self, other):
+        return other in self.rulebook[self]
+
+
 def parse(input_data):
-    rules = {}
-    pages = []
-    lines, rest = input_data.strip().split("\n\n")
-    for line in lines.split("\n"):
+    Page.rulebook = defaultdict(set)
+    rules, updates = input_data.strip().split("\n\n")
+    for line in rules.split("\n"):
         nums = line.split("|")
-        if int(nums[0]) in rules:
-            rules[int(nums[0])].add(int(nums[1]))
-        else:
-            rules[int(nums[0])] = set()
-            rules[int(nums[0])].add(int(nums[1]))
-    for line in rest.split("\n"):
-        nums = re.findall(r"\d+", line)
-        pages.append([int(n) for n in nums])
-    return rules, pages
+        Page.rulebook[Page(nums[0])].add(Page(nums[1]))
 
-
-def helper(line, rules):
-    seen = set()
-    for thing in line:
-        if thing in rules and rules[thing] & seen:
-            return 0
-        seen.add(thing)
-    return line[len(line) // 2]
-
-
-def helper2(line, rules):
-    seen = set()
-    for i, thing in enumerate(line):
-        if thing in rules and rules[thing] & seen:
-            line.pop(i)
-            line.insert(i - 1, thing)
-            return helper2(line, rules)
-        seen.add(thing)
-    return line[len(line) // 2]
+    return [[Page(page) for page in update.split(",")] for update in updates.split()]
 
 
 def solve(input_data):
-    rules, pages = parse(input_data)
+    updates = parse(input_data)
     p1 = p2 = 0
-    for line in pages:
-        p1 += helper(line, rules)
-        if not helper(line, rules):
-            p2 += helper2(line, rules)
-
+    for update in updates:
+        sorted_update = sorted(update)
+        if sorted_update == update:
+            p1 += sorted_update[len(sorted_update) // 2]
+        else:
+            p2 += sorted_update[len(sorted_update) // 2]
     return p1, p2
 
 
