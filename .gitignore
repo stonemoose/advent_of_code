@@ -15,3 +15,6 @@ prose/
 
 # spacemacs
 *~undo-tree~
+
+# Mac
+.DS_Store
