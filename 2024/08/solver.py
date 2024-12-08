@@ -1,72 +1,59 @@
-import re
 from aocd.models import Puzzle
-import aoc_functionality.grid_helper as gh
-import math
+from collections import defaultdict
+import numpy as np
 
 
 def parse(input_data):
-    parsed = []
-    for line in input_data.split("\n"):
-        parsed.append(list(line))
-    return parsed
-
-
-def helper2(x, y, grid):
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == ".":
-                continue
-            if i == x and y == j:
-                continue
-
-            x_dir = int((i - x) / math.gcd((i - x), (j - y)))
-            y_dir = int((j - y) / math.gcd((i - x), (j - y)))
-
-            for n in range(-100, 100):
-                next_x = x + n * x_dir
-                next_y = y + n * y_dir
-                if next_x == i:
-                    continue
-                if gh.coords_in_grid(next_x, next_y, grid):
-                    if grid[next_x][next_y] == grid[i][j]:
-                        return True
-    return False
-
-
-def helper(x, y, grid):
-    ans = 0
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] in ".#":
-                continue
-            if i == x and y == j:
-                continue
-
-            next_x = x + 2 * (i - x)
-            next_y = y + 2 * (j - y)
-            if gh.coords_in_grid(next_x, next_y, grid):
-                if grid[next_x][next_y] == grid[i][j]:
-                    return True
-    return False
+    antennas = defaultdict(list)
+    lines = input_data.split("\n")
+    size_x = len(lines)
+    size_y = len(lines[0])
+    for x, line in enumerate(lines):
+        for y, frequency in enumerate(line):
+            if frequency != ".":
+                antennas[frequency].append(np.array((x, y), int))
+    return antennas, size_x, size_y
 
 
 def solve(input_data):
-    grid = parse(input_data)
-    p1 = p2 = 0
+    antennas, size_x, size_y = parse(input_data)
 
-    for x in range(len(grid)):
-        for y in range(len(grid[0])):
-            if helper(x, y, grid):
-                p1 += 1
-            if helper2(x, y, grid):
-                p2 += 1
+    antinodes = set()
+    resonant_antinodes = set()
+    min_coords = np.array((0, 0), int)
+    max_coords = np.array((size_x, size_y), int)
 
-    return p1, p2
+    for frequency in antennas:
+        coords = antennas[frequency]
+        while coords:
+            first = coords.pop(0)
+            for second in coords:
+                direction_vector = second - first
+                direction_vector //= np.gcd(*direction_vector)
+
+                # Part 1
+                before = first - direction_vector
+                after = second + direction_vector
+                if all((min_coords <= before) & (before < max_coords)):
+                    antinodes.add(tuple(first - direction_vector))
+                if all((min_coords <= after) & (after < max_coords)):
+                    antinodes.add(tuple(second + direction_vector))
+
+                # Part 2
+                node = first.copy()
+                while all((min_coords <= node) & (node < max_coords)):
+                    resonant_antinodes.add(tuple(node))
+                    node -= direction_vector
+                node = first.copy()
+                while all((min_coords <= node) & (node < max_coords)):
+                    resonant_antinodes.add(tuple(node))
+                    node += direction_vector
+
+    return len(antinodes), len(resonant_antinodes)
 
 
 if __name__ == "__main__":
     puzzle = Puzzle(2024, 8)
-
     assert solve(puzzle.examples[0].input_data) == (14, 34)
     p1, p2 = solve(puzzle.input_data)
     puzzle.answer_a = p1
