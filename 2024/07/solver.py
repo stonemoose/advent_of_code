@@ -9,17 +9,23 @@ def parse(input_data):
     return parsed
 
 
-def check_equation(ans, nums, combined, append=False):
-    if not nums:
-        return ans == combined
-    if combined > ans:
+def check_equation(ans, nums, append=False):
+    if len(nums) == 1:
+        return ans == nums[0]
+    if ans < nums[-1]:
         return False
 
+    str_ans = str(ans)
+    str_last_num = str(nums[-1])
     return (
-        check_equation(ans, nums[1:], combined + nums[0], append)
-        or check_equation(ans, nums[1:], combined * nums[0], append)
-        or append
-        and check_equation(ans, nums[1:], int(str(combined) + str(nums[0])), append)
+        (
+            append
+            and str_ans.endswith(str_last_num)
+            and len(str_ans) > len(str_last_num)
+            and check_equation(int(str_ans[: -len(str_last_num)]), nums[:-1], append)
+        )
+        or (ans % nums[-1] == 0 and check_equation(ans // nums[-1], nums[:-1], append))
+        or check_equation(ans - nums[-1], nums[:-1], append)
     )
 
 
@@ -28,9 +34,10 @@ def solve(input_data):
     p1 = p2 = 0
 
     for line in parsed:
-        if check_equation(line[0], line[2:], line[1]):
+        if check_equation(line[0], line[1:]):
             p1 += line[0]
-        if check_equation(line[0], line[2:], line[1], True):
+            p2 += line[0]
+        elif check_equation(line[0], line[1:], True):
             p2 += line[0]
 
     return p1, p2
