@@ -1,80 +1,98 @@
 from aocd.models import Puzzle
 
+from aoc_functionality.util import profile
+
 
 def parse(input_data):
-    data = []
-    counter = 0
+    file_num = 0
+    files = []
+    free_space = []
     space = False
     for num in input_data:
         if space:
-            data.append((int(num), None))
+            free_space.append((int(num)))
         else:
-            data.append((int(num), counter))
-            counter += 1
+            files.append((int(num), file_num))
+            file_num += 1
         space = not space
 
-    return data
+    free_space.append(9)
+    return files, free_space
 
 
-def helper(line):
-    while True:
-        amount, num = line.pop()
-        if num is None:
-            continue
-        while amount:
-            for i, space_new_num in enumerate(line):
-                space, new_num = space_new_num
-                if new_num is None:
-                    if amount >= space:
-                        line[i] = (space, num)
-                        amount -= space
-                    elif amount < space:
-                        line[i] = (space - amount, None)
-                        line.insert(i, (amount, num))
-                        amount = 0
-                        break
-            else:
-                line.append((amount, num))
-                return line
+def part1(files, free_space):
+    filled_space = [[] for _ in range(len(free_space))]
+    space_index = 0
+
+    size, file_num = files.pop()
+    space = free_space[space_index]
+    while space_index < (len(files) - 1):
+        if size == 0:
+            size, file_num = files.pop()
+        if space == 0:
+            space_index += 1
+            space = free_space[space_index]
+
+        if size <= space:
+            filled_space[space_index].append((size, file_num))
+            space -= size
+            size = 0
+        else:
+            filled_space[space_index].append((space, file_num))
+            size -= space
+            space = 0
+    if size:
+        files.append((size, file_num))
+
+    out = []
+    for i in range(len(files)):
+        out.append(files[i])
+        for j in range(len(filled_space[i])):
+            out.append(filled_space[i][j])
+
+    return out
 
 
-def helper2(line):
-    counter = 0
-    while abs(counter) < len(line):
-        counter -= 1
-        amount, num = line[counter]
-        if num is None:
-            continue
-        for i, space_new_num in enumerate(line[:counter]):
-            space, new_num = space_new_num
-            if new_num is None:
-                if amount == space:
-                    line[counter] = (amount, None)
-                    line[i] = (space, num)
-                    break
-                if amount < space:
-                    line[counter] = (amount, None)
-                    line[i] = (space - amount, None)
-                    line.insert(i, (amount, num))
-                    break
-    return line
+def part2(files, free_space):
+
+    filled_space = [[] for _ in range(len(free_space))]
+    space_dict = {n: [] for n in range(10)}
+    for index, space in enumerate(free_space):
+        space_dict[space].append(index)
+    file_index = len(files) - 1
+    while file_index > 0:
+        size, file_num = files[file_index]
+        for i in range(file_index):
+            if free_space[i] >= size:
+                free_space[i] -= size
+                filled_space[i].append((size, file_num))
+                files[file_index] = (size, 0)
+                break
+        file_index -= 1
+
+    out = []
+    for i in range(len(files)):
+        out.append(files[i])
+        for j in range(len(filled_space[i])):
+            out.append(filled_space[i][j])
+        out.append((free_space[i], 0))
+    return out
 
 
 def solve(input_data):
-    parsed = parse(input_data)
+    files, free_space = parse(input_data)
     p1 = p2 = 0
 
     count = 0
-    for amount, num in helper(parsed.copy()):
+    for amount, num in part1(files.copy(), free_space.copy()):
         for _ in range(amount):
             p1 += (count) * int(num)
             count += 1
 
     count = 0
-    for amount, num in helper2(parsed):
+    for amount, num in part2(files, free_space):
         for _ in range(amount):
-            if num is not None:
-                p2 += (count) * int(num)
+            p2 += (count) * int(num)
             count += 1
 
     return p1, p2
@@ -84,7 +102,7 @@ if __name__ == "__main__":
     puzzle = Puzzle(2024, 9)
 
     ex1, ex2 = solve(puzzle.examples[0].input_data)
-    p1, p2 = solve(puzzle.input_data)
+    p1, p2 = profile(solve, puzzle.input_data)
 
     assert ex1 == 1928
     puzzle.answer_a = p1
