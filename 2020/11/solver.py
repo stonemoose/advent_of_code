@@ -1,4 +1,5 @@
 from copy import deepcopy
+from aocd.models import Puzzle
 
 
 def neighours(x, y, seats):
@@ -12,23 +13,40 @@ def neighours(x, y, seats):
     return num
 
 
-with open("input") as f:
-    orig_seats = [[c for c in line] for line in f.read().strip().split("\n")]
+def solve(input_data):
+    orig_seats = [[c for c in line] for line in input_data.split("\n")]
 
-seats = deepcopy(orig_seats)
-old_seats = []
-while old_seats != seats:
-    old_seats = deepcopy(seats)
-    for row in range(len(seats)):
-        for col in range(len(seats[0])):
-            if seats[row][col] == ".":
-                continue
-            n = neighours(row, col, old_seats)
-            if n == 0:
-                seats[row][col] = "#"
-            elif n >= 4:
-                seats[row][col] = "L"
-print(sum(x == "#" for line in seats for x in line))
+    seats = deepcopy(orig_seats)
+    old_seats = []
+    while old_seats != seats:
+        old_seats = deepcopy(seats)
+        for row in range(len(seats)):
+            for col in range(len(seats[0])):
+                if seats[row][col] == ".":
+                    continue
+                n = neighours(row, col, old_seats)
+                if n == 0:
+                    seats[row][col] = "#"
+                elif n >= 4:
+                    seats[row][col] = "L"
+    p1 = sum(x == "#" for line in seats for x in line)
+
+    seats = deepcopy(orig_seats)
+    old_seats = []
+    while old_seats != seats:
+        old_seats = deepcopy(seats)
+        for row in range(len(seats)):
+            for col in range(len(seats[0])):
+                if seats[row][col] == ".":
+                    continue
+                n = part2_neighours(row, col, old_seats)
+                if n == 0:
+                    seats[row][col] = "#"
+                elif n >= 5:
+                    seats[row][col] = "L"
+
+    p2 = sum(x == "#" for line in seats for x in line)
+    return p1, p2
 
 
 def part2_neighours(x, y, seats):
@@ -53,18 +71,8 @@ def part2_neighours(x, y, seats):
     return num
 
 
-seats = deepcopy(orig_seats)
-old_seats = []
-while old_seats != seats:
-    old_seats = deepcopy(seats)
-    for row in range(len(seats)):
-        for col in range(len(seats[0])):
-            if seats[row][col] == ".":
-                continue
-            n = part2_neighours(row, col, old_seats)
-            if n == 0:
-                seats[row][col] = "#"
-            elif n >= 5:
-                seats[row][col] = "L"
-
-print(sum(x == "#" for line in seats for x in line))
+if __name__ == "__main__":
+    puzze = Puzzle(2020, 11)
+    p1, p2 = solve(puzze.input_data)
+    puzze.answer_a = p1
+    puzze.answer_b = p2

@@ -20,45 +20,42 @@ def hyper_neighours(x, y, z, w, seats):
     return num
 
 
-input_len = 8
-size = 7 * 2 + input_len
-cubes = [[["." for k in range(size)] for j in range(size)] for i in range(size)]
-hyper_cubes = [deepcopy(cubes) for w in range(size)]
-with open("input") as f:
+def solve(input_data):
+    input_len = 8
+    size = 7 * 2 + input_len
+    cubes = [[["." for k in range(size)] for j in range(size)] for i in range(size)]
+    hyper_cubes = [deepcopy(cubes) for w in range(size)]
+
     z = (size - input_len) // 2
     w = (size - input_len) // 2
-    for x, line in enumerate(f.read().strip().split("\n"), z):
+    for x, line in enumerate(input_data.split("\n"), z):
         for y, char in enumerate(line, z):
             cubes[x][y][z] = char
             hyper_cubes[x][y][z][w] = char
 
-for i in range(6):
-    old_cubes = deepcopy(cubes)
-    old_hyper_cubes = deepcopy(hyper_cubes)
-    for x in range(1, size - 1):
-        for y in range(1, size - 1):
-            for z in range(1, size - 1):
-                n = neighours(x, y, z, old_cubes)
-                if cubes[x][y][z] == "." and n == 3:
-                    cubes[x][y][z] = "#"
-                elif cubes[x][y][z] == "#" and n not in (2, 3):
-                    cubes[x][y][z] = "."
-                for w in range(1, size - 1):
-                    n = hyper_neighours(x, y, z, w, old_hyper_cubes)
-                    if hyper_cubes[x][y][z][w] == "." and n == 3:
-                        hyper_cubes[x][y][z][w] = "#"
-                    elif hyper_cubes[x][y][z][w] == "#" and n not in (2, 3):
-                        hyper_cubes[x][y][z][w] = "."
-print(
-    "Part 1: ", sum(char == "#" for plane in cubes for line in plane for char in line)
-)
-print(
-    "Part 2: ",
-    sum(
+    for i in range(6):
+        old_cubes = deepcopy(cubes)
+        old_hyper_cubes = deepcopy(hyper_cubes)
+        for x in range(1, size - 1):
+            for y in range(1, size - 1):
+                for z in range(1, size - 1):
+                    n = neighours(x, y, z, old_cubes)
+                    if cubes[x][y][z] == "." and n == 3:
+                        cubes[x][y][z] = "#"
+                    elif cubes[x][y][z] == "#" and n not in (2, 3):
+                        cubes[x][y][z] = "."
+                    for w in range(1, size - 1):
+                        n = hyper_neighours(x, y, z, w, old_hyper_cubes)
+                        if hyper_cubes[x][y][z][w] == "." and n == 3:
+                            hyper_cubes[x][y][z][w] = "#"
+                        elif hyper_cubes[x][y][z][w] == "#" and n not in (2, 3):
+                            hyper_cubes[x][y][z][w] = "."
+    p1 = sum(char == "#" for plane in cubes for line in plane for char in line)
+    p2 = sum(
         char == "#"
         for cube in hyper_cubes
         for plane in cube
         for line in plane
         for char in line
-    ),
-)
+    )
+    return p1, p2

@@ -64,14 +64,9 @@ def postfix_solve(postfix_list):
     return stack[0]
 
 
-with open("input") as f:
-    homework = f.read().strip().split("\n")
+def solve(input_data):
+    homework = input_data.split("\n")
 
-print(
-    "Part 1: ",
-    sum(postfix_solve(to_postfix(line.replace(" ", ""))) for line in homework),
-)
-print(
-    "Part 2: ",
-    sum(postfix_solve(to_postfix_2(line.replace(" ", ""))) for line in homework),
-)
+    p1 = sum(postfix_solve(to_postfix(line.replace(" ", ""))) for line in homework)
+    p2 = sum(postfix_solve(to_postfix_2(line.replace(" ", ""))) for line in homework)
+    return p1, p2

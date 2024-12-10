@@ -1,14 +1,17 @@
-north = east = ship_north = ship_east = 0
-direction = [1, 0]
-wp_north, wp_east = (1, 10)
-direction_dict = {
-    "N": (0, 1),
-    "E": (1, 0),
-    "S": (0, -1),
-    "W": (-1, 0),
-}
-with open("input") as f:
-    for line in f.read().strip().split("\n"):
+from aocd.models import Puzzle
+
+
+def solve(input_data):
+    north = east = ship_north = ship_east = 0
+    direction = [1, 0]
+    wp_north, wp_east = (1, 10)
+    direction_dict = {
+        "N": (0, 1),
+        "E": (1, 0),
+        "S": (0, -1),
+        "W": (-1, 0),
+    }
+    for line in input_data.split("\n"):
         instruction = line[0]
         num = int(line[1:])
         if instruction == "R":
@@ -30,5 +33,13 @@ with open("input") as f:
             wp_east += num * direction_dict[instruction][0]
             wp_north += num * direction_dict[instruction][1]
 
-print(f"Part 1: {abs(north) + abs(east)}")
-print(f"Part 1: {abs(ship_north) + abs(ship_east)}")
+    p1 = abs(north) + abs(east)
+    p2 = abs(ship_north) + abs(ship_east)
+    return p1, p2
+
+
+if __name__ == "__main__":
+    puzzle = Puzzle(2020, 12)
+    p1, p2 = solve(puzzle.input_data)
+    puzzle.answer_a = p1
+    puzzle.answer_b = p2

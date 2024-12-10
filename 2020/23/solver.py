@@ -23,26 +23,34 @@ class Cup:
         return f"{self.label} -> {self.clockwise.label}"
 
 
-with open("input") as f:
-    cups = [Cup(label) for label in f.read().strip()]
-    cups += [Cup(i) for i in range(len(cups) + 1, 1000001)]  # Part 2
-    num_cups = len(cups)
-for cup1, cup2 in zip(cups, cups[1:] + [cups[0]]):
-    cup1.clockwise = cup2
-current = cups[0]
+def crab_cups(cups, moves=100):
+    for cup1, cup2 in zip(cups, cups[1:] + [cups[0]]):
+        cup1.clockwise = cup2
+    current = cups[0]
 
-cups.sort(key=lambda c: c.label)
-for cup1, cup2 in zip(cups[1:] + [cups[0]], cups):
-    cup1.destination = cup2
+    cups.sort(key=lambda c: c.label)
+    for cup1, cup2 in zip(cups[1:] + [cups[0]], cups):
+        cup1.destination = cup2
 
-for i in range(10000000):  # Change number for part 1
-    pickup = current.move()
-    current = current.clockwise
+    for _ in range(moves):
+        current.move()
+        current = current.clockwise
+    return cups
 
-current = cups[0].clockwise
-print(current.label * current.clockwise.label)
-# Part 1
-# while(current != cups[0]):
-#     print(current.label, end='')
-#     current = current.clockwise
-# print()
+
+def solve(input_data):
+    cups = [Cup(label) for label in input_data]
+    million_cups = [Cup(label) for label in input_data]
+    million_cups += [Cup(i) for i in range(len(million_cups) + 1, 1000001)]
+
+    cups = crab_cups(cups)
+    current = cups[0].clockwise
+    p1 = ""
+    while current != cups[0]:
+        p1 += str(current.label)
+        current = current.clockwise
+
+    million_cups = crab_cups(million_cups, 10_000_000)
+    cup_one = million_cups[0].clockwise
+    p2 = cup_one.label * cup_one.clockwise.label
+    return p1, p2

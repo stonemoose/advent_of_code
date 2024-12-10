@@ -1,10 +1,5 @@
 from copy import deepcopy
 
-with open("input") as f:
-    deck1, deck2 = [d.split("\n")[1:] for d in f.read().strip().split("\n\n")]
-    deck1 = [int(card) for card in deck1]
-    deck2 = [int(card) for card in deck2]
-
 
 def play(deck1, deck2):
     deck1, deck2 = deepcopy(deck1), deepcopy(deck2)
@@ -55,8 +50,18 @@ def score(deck):
     return sum(i * card for i, card in enumerate(deck[::-1], 1))
 
 
-print(play(deck1, deck2))
-print(score(play(deck1, deck2)))
-deck, winner = recursive_play(deck1, deck2)
-print(deck, winner)
-print(score(deck))
+def solve(input_data):
+    deck1, deck2 = [d.split("\n")[1:] for d in input_data.split("\n\n")]
+    deck1 = [int(card) for card in deck1]
+    deck2 = [int(card) for card in deck2]
+
+    p1 = score(play(deck1, deck2))
+    p2 = score(recursive_play(deck1, deck2)[0])
+    return p1, p2
+
+
+if __name__ == "__main__":
+    with open("input") as f:
+        p1, p2 = solve(f.read().strip())
+    print("Part 1:", p1)
+    print("Part 2:", p2)

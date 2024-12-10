@@ -1,4 +1,5 @@
 from itertools import product, chain
+from aocd.models import Puzzle
 
 
 def possible_locations(mask, mem):
@@ -14,27 +15,38 @@ def possible_locations(mask, mem):
     return all_masks
 
 
-with open("input") as f:
-    docking_data = [line.split(" = ") for line in f.read().strip().split("\n")]
-memory1 = {}
-memory2 = {}
-
-for first, second in docking_data:
-    if first == "mask":
-        mask = second
-    else:
-        string = ""
-        for digit, m_digit in zip(f"{int(second):036b}", mask):
-            if m_digit == "X":
-                string += digit
-            else:
-                string += m_digit
-        memory1[first] = int(string, 2)
-
-        mem = int(first[4:-1])
-        for loc in possible_locations(mask, mem):
-            memory2[loc] = int(second)
+def parse(input_data):
+    return [line.split(" = ") for line in input_data.split("\n")]
 
 
-print(f"Part 1: {sum(memory1.values())}")
-print(f"Part 2: {sum(memory2.values())}")
+def solve(input_data):
+    docking_data = parse(input_data)
+    memory1 = {}
+    memory2 = {}
+
+    for first, second in docking_data:
+        if first == "mask":
+            mask = second
+        else:
+            string = ""
+            for digit, m_digit in zip(f"{int(second):036b}", mask):
+                if m_digit == "X":
+                    string += digit
+                else:
+                    string += m_digit
+            memory1[first] = int(string, 2)
+
+            mem = int(first[4:-1])
+            for loc in possible_locations(mask, mem):
+                memory2[loc] = int(second)
+
+    p1 = sum(memory1.values())
+    p2 = sum(memory2.values())
+    return p1, p2
+
+
+if __name__ == "__main__":
+    puzzle = Puzzle(2020, 14)
+    p1, p2 = solve(puzzle.input_data)
+    puzzle.answer_a = p1
+    puzzle.answer_b = p2

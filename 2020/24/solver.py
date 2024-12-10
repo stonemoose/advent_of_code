@@ -23,8 +23,8 @@ def coordinate(se, nw, ne, sw, w, e):
     return (s - n, e - w)
 
 
-with open("input") as f:
-    for line in f.read().strip().split("\n"):
+def solve(input_data):
+    for line in input_data.split("\n"):
         oline = line
         se = len(re.findall("se", line))
         line = line.replace("se", "")
@@ -43,23 +43,25 @@ with open("input") as f:
         else:
             flipped.remove(tile)
 
-print(f"Part 1: {len(flipped)}")
+    p1 = len(flipped)
 
-size = 300
-floor = [[0] * size for i in range(size)]
-mid = size // 2
+    size = 300
+    floor = [[0] * size for i in range(size)]
+    mid = size // 2
 
-for x, y in flipped:
-    floor[mid + x][mid + y] = 1
+    for x, y in flipped:
+        floor[mid + x][mid + y] = 1
 
-for i in range(1, 101):
-    old_floor = deepcopy(floor)
-    for x in range(size):
-        for y in range(size):
-            n = hex_neighours(x, y, old_floor)
-            if old_floor[x][y] and (n == 0 or n > 2):
-                floor[x][y] = 0
-            elif not old_floor[x][y] and n == 2:
-                floor[x][y] = 1
+    for i in range(1, 101):
+        old_floor = deepcopy(floor)
+        for x in range(size):
+            for y in range(size):
+                n = hex_neighours(x, y, old_floor)
+                if old_floor[x][y] and (n == 0 or n > 2):
+                    floor[x][y] = 0
+                elif not old_floor[x][y] and n == 2:
+                    floor[x][y] = 1
 
-print("Part 2:", sum(tile for line in floor for tile in line))
+    p2 = sum(tile for line in floor for tile in line)
+
+    return p1, p2
