@@ -1,6 +1,7 @@
 from aocd.models import Puzzle
 from collections import defaultdict
 import aoc_functionality.grid_helper as gh
+from functools import cache
 
 
 def parse(input_data):
@@ -29,14 +30,15 @@ def trailhead_score(heights, start, parents):
     return sum(heights[v[0]][v[1]] == 9 for v in visited)
 
 
-def distinct_trails(parents, start):
-    ways = parents[start]
-    if not ways:
-        return 1
-    return sum(distinct_trails(parents, child) for child in ways)
-
-
 def total_trail_rating(grid, parents):
+
+    @cache
+    def distinct_trails(start):
+        ways = parents[start]
+        if not ways:
+            return 1
+        return sum(distinct_trails(child) for child in ways)
+
     count = 0
     for i in range(len(grid)):
         for j in range(len(grid[0])):
@@ -44,7 +46,7 @@ def total_trail_rating(grid, parents):
                 ways = parents[(i, j)]
                 if not ways:
                     continue
-                count += distinct_trails(parents, (i, j))
+                count += distinct_trails((i, j))
     return count
 
 
