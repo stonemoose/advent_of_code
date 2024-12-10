@@ -35,11 +35,12 @@ def profile(func, *args, **kwargs):
 
     profiler = cProfile.Profile()
     profiler.enable()
-    func(*args, **kwargs)
+    ret = func(*args, **kwargs)
     profiler.disable()
 
-    stats = pstats.Stats(profiler).sort_stats("cumtime")
+    stats = pstats.Stats(profiler).sort_stats("tottime")
     stats.print_stats(20)
+    return ret
 
 
 class Color:
