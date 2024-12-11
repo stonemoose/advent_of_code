@@ -1,5 +1,6 @@
 from aocd.models import Puzzle
 from collections import defaultdict
+from functools import cache
 
 
 def parse(input_data):
@@ -22,6 +23,31 @@ def blink_once(stones):
         else:
             new_stones[stone * 2024] += num
     return new_stones
+
+
+@cache
+def blink_recursive(stone, blinks):
+    if blinks == 0:
+        return 1
+    if stone == 0:
+        return blink_recursive(1, blinks - 1)
+    elif len(str(stone)) % 2 == 0:
+        str_stone = str(stone)
+        middle = len(str_stone) // 2
+        return blink_recursive(int(str_stone[:middle]), blinks - 1) + blink_recursive(
+            int(str_stone[middle:]), blinks - 1
+        )
+    else:
+        return blink_recursive(stone * 2024, blinks - 1)
+
+
+def solve_recursive(input_data):
+    stones = parse(input_data)
+    p1 = p2 = 0
+
+    p1 = sum(blink_recursive(stone, 25) for stone in stones)
+    p2 = sum(blink_recursive(stone, 75) for stone in stones)
+    return p1, p2
 
 
 def solve(input_data):
