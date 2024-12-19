@@ -9,22 +9,22 @@ def parse(input_data):
 
 
 @cache
-def possible_designs(design, towels, max_len):
+def possible_arrangements(design, towels, longest_towel):
     if not design:
         return 1
     ans = 0
-    for i in range(1, min((max_len + 1, len(design) + 1))):
+    for i in range(1, min(longest_towel, len(design) + 1)):
         if design[:i] in towels:
-            ans += possible_designs(design[i:], towels, max_len)
+            ans += possible_arrangements(design[i:], towels, longest_towel)
     return ans
 
 
 def solve(input_data):
     towels, designs = parse(input_data)
-    max_len = max(len(d) for d in designs)
+    longest_towel = max(len(t) for t in towels) + 1
     p1 = p2 = 0
     for design in designs:
-        number = possible_designs(design, towels, max_len)
+        number = possible_arrangements(design, towels, longest_towel)
         p1 += 1 if number else 0
         p2 += number
     return p1, p2
