@@ -1,26 +1,10 @@
-[tool.poetry]
-name = "advent_of_code"
+[project]
+name = "advent-of-code"
 version = "0.1.0"
-description = ""
-authors = ["Stein Elgethun <stein.elgethun@gmail.com>"]
-packages = [
-	{ include = "aoc_functionality" },
+description = "Advent of Code solutions"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "advent-of-code-data>=2.1.0",
+    "numpy>=2.3.5",
 ]
-
-
-[tool.poetry.dependencies]
-python = "^3.10"
-typer = "^0.7.0"
-requests = "^2.28.1"
-advent-of-code-data = "^2"
-numpy = "^1.26"
-
-[tool.poetry.dev-dependencies]
-
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."adventofcode.user"]
-elg = "aoc_functionality:solve"
