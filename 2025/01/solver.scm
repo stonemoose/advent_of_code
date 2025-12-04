@@ -28,17 +28,15 @@
           (+ zeros (if (zero? position) 1 0)))))
     (inner-turn (cadr turn) position 0))
 
-
-
   (define (find-password position password zeros remaining-turns)
     (if (null? remaining-turns)
       (list (+ password (if (zero? position) 1 0)) zeros)
-        (let ((pos-zeros (turn-dial (car remaining-turns) position)))
-          (find-password
-            (car pos-zeros)
-            (+ password (if (zero? position) 1 0))
-            (+ zeros (cadr pos-zeros))
-            (cdr remaining-turns)))))
+      (let ((pos-zeros (turn-dial (car remaining-turns) position)))
+        (find-password
+          (car pos-zeros)
+          (+ password (if (zero? position) 1 0))
+          (+ zeros (cadr pos-zeros))
+          (cdr remaining-turns)))))
   (find-password 50 0 0 input))
 
 
