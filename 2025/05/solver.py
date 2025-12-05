@@ -3,47 +3,37 @@ from aocd.models import Puzzle
 
 def parse(input_data):
     parsed_ranges = []
-    parsed_ids = []
     ranges, ids = input_data.split("\n\n")
     for line in ranges.split():
         start, end = line.split("-")
         parsed_ranges.append([int(start), int(end)])
-    for line in ids.split():
-        parsed_ids.append(int(line))
-    return parsed_ranges, parsed_ids
+    return parsed_ranges, [int(i) for i in ids]
 
 
 def combine_ranges(ranges):
-    combined = []
-    for cur_range in ranges:
-        start, end = cur_range
-        for other_range in combined:
-            other_start, other_end = other_range
-            if start <= other_end and other_start <= end:
-                other_range[0] = min(start, other_start)
-                other_range[1] = max(end, other_end)
-                break
+    sorted_ranges = sorted(ranges)
+    combined = [sorted_ranges[0]]
+
+    for start, end in sorted_ranges[1:]:
+        prev_end = combined[-1][1]
+        if start <= prev_end:
+            combined[-1][1] = max(end, prev_end)
         else:
-            combined.append(cur_range)
+            combined.append([start, end])
     return combined
 
 
 def solve(input_data):
     p1 = p2 = 0
     ranges, ids = parse(input_data)
-
-    combined = combine_ranges(ranges)
-    prev = []
-    while combined != prev:
-        prev = combined
-        combined = combine_ranges(combined)
+    ranges = combine_ranges(ranges)
 
     for food_id in ids:
-        for start, end in combined:
+        for start, end in ranges:
             if start <= food_id <= end:
                 p1 += 1
                 break
-    for start, end in combined:
+    for start, end in ranges:
         p2 += end - start + 1
 
     return p1, p2
