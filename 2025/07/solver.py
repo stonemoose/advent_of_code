@@ -1,4 +1,3 @@
-from aocd.models import Puzzle
 from collections import defaultdict
 
 
@@ -14,20 +13,17 @@ def analyse_manifold(manifold):
     beams = defaultdict(int)
     beams[len(manifold[0]) // 2] = 1
     splits = 0
-    quantum_timelines = 1
     for line in manifold:
         next_beams = defaultdict(int)
         for beam in beams:
             if line[beam] == "^":
-                quantum_timelines += beams[beam]
                 splits += 1
                 next_beams[beam - 1] += beams[beam]
                 next_beams[beam + 1] += beams[beam]
             else:
                 next_beams[beam] += beams[beam]
         beams = next_beams
-        print(beams)
-    return splits, quantum_timelines
+    return splits, sum(beams.values())
 
 
 def solve(input_data):
@@ -38,6 +34,8 @@ def solve(input_data):
 
 
 if __name__ == "__main__":
+    from aocd.models import Puzzle
+
     puzzle = Puzzle(2025, 7)
     p1, p2 = solve(puzzle.input_data)
     print(p1, p2)
